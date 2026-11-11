@@ -1,0 +1,3 @@
+interface:
+  display_name: "Hairline Motion"
+  short_description: "Restrained UI motion: curves, FLIP, springs, reduced motion"

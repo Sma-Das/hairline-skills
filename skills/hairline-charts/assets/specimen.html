@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hairline charts specimen</title>
+<!-- Needs hairline-ui installed beside this skill, and an HTTP server: ES modules do not
+     load from file://. From the skills folder: python3 -m http.server 8123, then open
+     http://localhost:8123/hairline-charts/assets/specimen.html?palette=moss&theme=light -->
+<link rel="stylesheet" href="../../hairline-ui/assets/palettes.css">
+<link rel="stylesheet" href="../../hairline-ui/assets/hairline.css">
+<link rel="stylesheet" href="charts.css">
+<script type="importmap">
+{ "imports": {
+  "./js/charts.js": "../../hairline-ui/assets/js/charts.js",
+  "./js/motion.js": "../../hairline-ui/assets/js/motion.js",
+  "./js/tooltip.js": "../../hairline-ui/assets/js/tooltip.js",
+  "./js/ui.js": "../../hairline-ui/assets/js/ui.js"
+} }
+</script>
+</head>
+<body class="hl-root">
+<main class="hl-page" id="main">
+  <div class="hl-page-head">
+    <h1>Charts</h1>
+    <p class="hl-intro">Every chart module on generated data. Hover for the tooltip; the controls ease the same marks to new values.</p>
+  </div>
+  <div class="hl-board">
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Spend this month</h2><p class="hl-note">Running total against a limit, with the projection to month end.</p></div>
+        <div class="hl-seg" role="group" aria-label="Line mode" id="line-mode"><button class="hl-seg-opt" type="button" aria-pressed="true" data-v="running">Running</button><button class="hl-seg-opt" type="button" aria-pressed="false" data-v="daily">Daily</button></div></div>
+      <svg id="line"></svg>
+    </section>
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>By team</h2><p class="hl-note">Stacked per day. Click a legend entry to isolate it.</p></div>
+        <div class="hl-seg" role="group" aria-label="Stack mode" id="stack-mode"><button class="hl-seg-opt" type="button" aria-pressed="true" data-v="daily">Daily</button><button class="hl-seg-opt" type="button" aria-pressed="false" data-v="running">Running</button></div></div>
+      <svg id="stacked"></svg>
+      <div id="legend"></div>
+    </section>
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>By month</h2><p class="hl-note">Bars per month, the line is the running total.</p></div>
+        <div class="hl-seg" role="group" aria-label="Running total" id="combo-mode"><button class="hl-seg-opt" type="button" aria-pressed="true" data-v="on">With total</button><button class="hl-seg-opt" type="button" aria-pressed="false" data-v="off">Months only</button></div></div>
+      <svg id="combo"></svg>
+      <div class="hl-key"><span><i></i>Month</span><span><i class="is-line"></i>Running total</span></div>
+    </section>
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Products</h2><p class="hl-note">Volume against price, both log scale. Bubble area is revenue.</p></div></div>
+      <svg id="scatter"></svg>
+    </section>
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Share</h2><p class="hl-note">Stable layout: shuffle the values and the walls slide.</p></div>
+        <div class="hl-ctx-group"><button class="hl-button" type="button" id="shuffle">Shuffle</button><button class="hl-button" type="button" id="tm-back" hidden>Back</button></div></div>
+      <div id="treemap"></div>
+    </section>
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Every day</h2><p class="hl-note">The year from the first stored day. Hollow squares are still to come.</p></div></div>
+      <div id="heat"></div>
+    </section>
+  </div>
+</main>
+<script type="module">
+import { syncThumb } from "./js/ui.js";
+import { createLineChart } from "./js/line.js";
+import { createStackedChart } from "./js/stacked.js";
+import { createComboChart } from "./js/combo.js";
+import { createScatter } from "./js/scatter.js";
+import { createTreemap } from "./js/treemap.js";
+import { paintHeatmap } from "./js/heatmap.js";
+
+const params = new URLSearchParams(location.search);
+document.body.dataset.palette = params.get("palette") || "bronze";
+if (params.get("theme") === "light") document.body.dataset.theme = "light";
+
+// Seeded, so screenshots are repeatable.
+let seed = 7;
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const money = (c) => "$" + (c / 100).toLocaleString("en-US", { maximumFractionDigits: c < 10000 ? 2 : 0, minimumFractionDigits: c < 10000 ? 2 : 0 });
+const short = (c) => { const d = c / 100; return d >= 1000 ? "$" + +(d / 1000).toFixed(1) + "k" : "$" + Math.round(d); };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (i) => { const d = new Date(Date.UTC(2026, 10, 1 + i)); return MONTHS[d.getUTCMonth()] + " " + d.getUTCDate(); };
+const color = (n) => `var(--hl-data-${n})`;
+
+function seg(id, on) {
+  const host = document.getElementById(id);
+  syncThumb(host);
+  host.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    host.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    syncThumb(host);
+    on(b.dataset.v);
+  });
+}
+
+// Line: 11 days stored, 19 to come.
+const line = createLineChart(document.getElementById("line"), { format: money, formatAxis: short, words: { each: "that day", running: "this month", limit: "Budget", empty: "No spend this month." } });
+const points = Array.from({ length: 11 }, (_, i) => ({ label: day(i), value: Math.round(1800 + rand() * 4200 + (i % 7 > 4 ? -1200 : 0)) }));
+const spent = points.reduce((n, p) => n + p.value, 0);
+line.update({ points, ahead: Array.from({ length: 19 }, (_, i) => day(11 + i)), limit: 120000, projected: Math.round((spent / 11) * 30), label: "Spend this month, running total, with budget and projection" });
+seg("line-mode", (v) => line.setMode(v));
+
+// Stacked: 30 days, five series.
+const labels = Array.from({ length: 30 }, (_, i) => day(i - 29));
+const teams = ["Platform", "Data", "Mobile", "Web", "Other"];
+const series = teams.map((name, k) => ({ key: name, label: name, color: color(k + 1), other: name === "Other", members: name === "Other" ? ["Design", "Ops", "Legal"] : undefined,
+  values: labels.map((_, i) => Math.round((5 - k) * 300 * (0.5 + rand()) * (1 + i / 40))) }));
+const stacked = createStackedChart(document.getElementById("stacked"), document.getElementById("legend"), { format: money, formatAxis: short, onPick: (s) => console.log("pick", s.key) });
+stacked.update(labels, series, { label: "Spend by team per day, last 30 days" });
+seg("stack-mode", (v) => stacked.setMode(v));
+
+// Combo: 14 months, the last one partial.
+const combo = createComboChart(document.getElementById("combo"), { format: money, formatAxis: short, words: { each: "this month", running: "running total", so_far: "so far", on: "on", empty: "No months yet." } });
+combo.update(Array.from({ length: 14 }, (_, i) => {
+  const m = (9 + i) % 12, y = 2025 + Math.floor((9 + i) / 12);
+  return { label: MONTHS[m], group: String(y), title: MONTHS[m] + " " + y, value: Math.round(140000 + i * 12000 + rand() * 60000) * (i === 13 ? 0.35 : 1), partial: i === 13 };
+}), { label: "Spend by month with running total" });
+seg("combo-mode", (v) => combo.setRunning(v === "on"));
+
+// Scatter: products across decades.
+const names = ["Core", "Lite", "Pro", "Edge", "Vault", "Relay", "Atlas", "Pulse", "Echo", "Nimbus", "Quill", "Forge"];
+const scatter = createScatter(document.getElementById("scatter"), {
+  xTitle: "Units sold (log scale)", yTitle: "Price per unit (log scale)", formatY: (v) => "$" + (v >= 1 ? v.toLocaleString("en-US") : v), formatSize: money,
+  words: { x: "units", y: "per unit", size: "revenue", empty: "No products." },
+});
+scatter.update(names.map((name, i) => { const x = Math.round(10 ** (2 + rand() * 4)); const y = +(10 ** (-1 + rand() * 3)).toFixed(2); return { key: name, name, x, y, size: x * y * 100, color: color((i % 8) + 1) }; }), { label: "Products by units and price" });
+
+// Treemap: a long tail folds into one tile.
+const back = document.getElementById("tm-back");
+const tm = createTreemap(document.getElementById("treemap"), { format: money, onPick: (item) => console.log("pick", item.key), onLevel: ({ tail }) => { back.hidden = !tail; } });
+const regions = ["North America", "Europe", "Asia Pacific", "Latin America", "Middle East", "Africa", "Nordics", "Benelux", "Iberia", "Baltics", "Balkans", "Caribbean", "Oceania", "Central Asia"];
+const tmItems = () => regions.map((name, i) => ({ key: name, name, color: color((i % 8) + 1), value: Math.round(i < 9 ? 900000 / (i + 1) * (0.7 + rand() * 0.6) : 1500 + rand() * 2500) }));
+tm.update(tmItems());
+document.getElementById("shuffle").addEventListener("click", () => tm.update(tmItems()));
+back.addEventListener("click", () => tm.back());
+
+// Heatmap: 230 stored days, the rest of the year ahead.
+const start = Date.UTC(2026, 2, 26);
+const days = Array.from({ length: 371 }, (_, i) => {
+  const d = new Date(start + i * 86400000).toISOString().slice(0, 10);
+  if (i >= 230) return { day: d, value: 0, future: true };
+  const weekend = [0, 6].includes(new Date(start + i * 86400000).getUTCDay());
+  return { day: d, value: rand() < 0.08 ? 0 : Math.round((weekend ? 400 : 2400) * (0.3 + rand()) * (1 + i / 300)) };
+});
+paintHeatmap(document.getElementById("heat"), days, { format: money, name: "Spend by day" });
+</script>
+</body>
+</html>

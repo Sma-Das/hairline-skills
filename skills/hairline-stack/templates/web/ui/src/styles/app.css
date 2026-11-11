@@ -1,0 +1,6 @@
+/* hairline-ui first, then this app's own few rules. Keep colors to the tokens. */
+@import "../hairline/palettes.css";
+@import "../hairline/hairline.css";
+
+.app-error { margin: 8px 0; color: var(--hl-muted); font-size: 13.5px; }
+.app-error .hl-button { margin-inline-start: 10px; color: var(--hl-ink); }

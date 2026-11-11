@@ -1,0 +1,36 @@
+name: test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Check packages and references
+        run: node scripts/check.mjs
+      - name: Test treemap layout
+        run: node --test skills/hairline-charts/assets/js/layout.test.mjs
+      - name: Check every palette
+        run: node skills/hairline-ui/scripts/palette.mjs --all
+      - name: Generate an app
+        run: bash skills/hairline-stack/scripts/scaffold.sh "$RUNNER_TEMP/hairline-example" example.com/hairline-example "Example dashboard"
+      - name: Test and build the UI
+        working-directory: ${{ runner.temp }}/hairline-example/web/ui
+        run: |
+          npm install
+          npm test
+          npm run build
+      - name: Check the embedded Go app
+        working-directory: ${{ runner.temp }}/hairline-example
+        run: |
+          go vet ./...
+          go test ./...

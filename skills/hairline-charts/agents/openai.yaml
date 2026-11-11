@@ -1,0 +1,3 @@
+interface:
+  display_name: "Hairline Charts"
+  short_description: "Hand-drawn SVG dashboard charts, no library"

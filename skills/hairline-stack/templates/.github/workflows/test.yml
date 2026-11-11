@@ -1,0 +1,26 @@
+name: test
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/ui/package-lock.json
+      - run: npm ci
+        working-directory: web/ui
+      - run: npm test
+        working-directory: web/ui
+      # The binary embeds this build, so it runs before go test.
+      - run: npm run build
+        working-directory: web/ui
+      - run: go vet ./...
+      - run: go test ./...
