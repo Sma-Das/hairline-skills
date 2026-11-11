@@ -1,0 +1,3 @@
+interface:
+  display_name: "Hairline Stack"
+  short_description: "Go + embedded Svelte 5 dashboard scaffold"

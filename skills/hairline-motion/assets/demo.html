@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hairline motion demo</title>
+<!-- Serve over HTTP (ES modules do not load from file://):
+     python3 -m http.server 8123 from the skills folder, then /hairline-motion/assets/demo.html -->
+<link rel="stylesheet" href="motion.css">
+<style>
+  :root { --hl-ink: #ecebe6; color-scheme: dark; }
+  body { margin: 0; padding: 40px 24px; background: #121212; color: #a9a7a0; font: 14px/1.5 system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; display: grid; gap: 36px; }
+  h1 { margin: 0; color: var(--hl-ink); font-size: 22px; font-weight: 500; }
+  h2 { margin: 0 0 10px; color: var(--hl-ink); font-size: 14px; font-weight: 500; }
+  section { border-top: 1px solid #2a2a2a; padding-top: 14px; }
+  button { min-height: 32px; padding: 0 12px; border: 1px solid #3a3a3a; background: transparent; color: var(--hl-ink); font: inherit; cursor: pointer; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .seg { position: relative; display: inline-flex; gap: 16px; color: #8a887f; }
+  .seg button { border: 0; padding: 0 0 4px; color: inherit; }
+  .seg button[aria-pressed="true"] { color: var(--hl-ink); }
+  .seg .hl-marker { color: var(--hl-ink); }
+  .cards { display: grid; gap: 6px; }
+  .card { padding: 10px 12px; border: 1px solid #2a2a2a; color: var(--hl-ink); }
+  .figure { color: var(--hl-ink); font-size: 32px; font-variant-numeric: tabular-nums; }
+  .stage { position: relative; height: 60px; border: 1px solid #2a2a2a; }
+  .dot { position: absolute; left: 8px; top: 18px; width: 22px; height: 22px; background: var(--hl-ink); }
+  dialog { border: 0; border-inline-start: 1px solid #3a3a3a; background: #121212; color: inherit; padding: 20px; }
+  .hl-pop { width: min(480px, calc(100% - 24px)); margin: 12vh auto auto; border: 1px solid #3a3a3a; background: #1b1b1b; color: inherit; padding: 16px; }
+  .hl-pop::backdrop { background: rgb(0 0 0 / .55); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Motion</h1>
+
+  <section>
+    <h2>Selection marker</h2>
+    <div class="seg" id="seg"><button type="button" aria-pressed="true">Day</button><button type="button" aria-pressed="false">Week</button><button type="button" aria-pressed="false">Quarter to date</button></div>
+  </section>
+
+  <section>
+    <div class="row"><h2 style="margin:0">Fold</h2><button type="button" class="hl-press" id="fold-btn" aria-expanded="true" aria-controls="fold">Fold</button></div>
+    <div class="hl-fold" id="fold"><div class="hl-fold-inner"><p>Content that folds with nothing measured. The row track goes from 1fr to 0fr, and the folded body leaves the tab order. <a href="#">A link inside</a>.</p></div></div>
+  </section>
+
+  <section>
+    <div class="row"><h2 style="margin:0">Reorder (FLIP)</h2><button type="button" class="hl-press" id="shuffle">Shuffle</button></div>
+    <div class="cards" id="cards"><div class="card">Alpha</div><div class="card">Bravo</div><div class="card">Charlie</div><div class="card">Delta</div><div class="card">Echo</div></div>
+  </section>
+
+  <section>
+    <div class="row"><h2 style="margin:0">Count</h2><button type="button" class="hl-press" id="count-btn">New value</button></div>
+    <div class="figure" id="figure">$0</div>
+  </section>
+
+  <section>
+    <div class="row"><h2 style="margin:0">Spring retarget</h2><span>Click the stage several times quickly.</span></div>
+    <div class="stage" id="stage"><div class="dot" id="dot"></div></div>
+  </section>
+
+  <section>
+    <h2>Overlays</h2>
+    <div class="row"><button type="button" class="hl-press" id="sheet-btn">Open sheet</button><button type="button" class="hl-press" id="pop-btn">Open palette</button></div>
+  </section>
+</main>
+<dialog class="hl-sheet" id="sheet"><h2>Sheet</h2><p>In with the drawer curve, out the same way.</p><button type="button" class="hl-press" id="sheet-close">Close</button></dialog>
+<dialog class="hl-pop" id="pop"><h2>Palette</h2><p>From .98 at its top edge, 160ms. Escape closes it.</p></dialog>
+<script type="module">
+import { countTo } from "./js/motion.js";
+import { glideTo, reorder, slideMarker, toggleFold } from "./js/patterns.js";
+
+const seg = document.getElementById("seg");
+slideMarker(seg);
+seg.addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  seg.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  slideMarker(seg);
+});
+
+const foldBtn = document.getElementById("fold-btn");
+foldBtn.addEventListener("click", () => {
+  const folded = toggleFold(document.getElementById("fold"));
+  foldBtn.setAttribute("aria-expanded", String(!folded));
+  foldBtn.textContent = folded ? "Unfold" : "Fold";
+});
+
+const cards = document.getElementById("cards");
+document.getElementById("shuffle").addEventListener("click", () => {
+  const list = [...cards.children];
+  reorder(list, () => list.sort(() => Math.random() - 0.5).forEach((c) => cards.appendChild(c)));
+});
+
+const figure = document.getElementById("figure");
+const money = (v) => "$" + Math.round(v).toLocaleString("en-US");
+countTo(figure, 12480, money);
+document.getElementById("count-btn").addEventListener("click", () => countTo(figure, Math.round(2000 + Math.random() * 40000), money));
+
+const stage = document.getElementById("stage"), dot = document.getElementById("dot");
+stage.addEventListener("click", (e) => {
+  const b = stage.getBoundingClientRect();
+  glideTo(dot, Math.max(0, Math.min(b.width - 38, e.clientX - b.left - 19)), 0);
+});
+
+const sheet = document.getElementById("sheet"), pop = document.getElementById("pop");
+document.getElementById("sheet-btn").addEventListener("click", () => sheet.showModal());
+document.getElementById("sheet-close").addEventListener("click", () => sheet.close());
+document.getElementById("pop-btn").addEventListener("click", () => pop.showModal());
+pop.addEventListener("click", (e) => { if (e.target === pop) pop.close(); });
+</script>
+</body>
+</html>

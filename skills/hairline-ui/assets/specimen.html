@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hairline specimen</title>
+<link rel="stylesheet" href="palettes.css">
+<link rel="stylesheet" href="hairline.css">
+<!-- Opens from file://. The script is classic and inline because file:// blocks ES modules.
+     In an app, import the modules in assets/js instead of copying this script. -->
+</head>
+<body class="hl-root">
+<a class="hl-skip" href="#main">Skip to content</a>
+
+<header class="hl-header">
+  <div class="hl-header-inner">
+    <a class="hl-brand" href="#">Northwind</a>
+    <nav class="hl-nav" id="nav" aria-label="Pages">
+      <a href="#" aria-current="page">Overview</a>
+      <a href="#">Usage</a>
+      <a href="#">People</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="hl-header-actions">
+      <button class="hl-button" type="button" id="open-palette">Search <kbd>⌘K</kbd></button>
+      <button class="hl-button" type="button" id="theme">Light</button>
+    </div>
+  </div>
+</header>
+
+<div class="hl-ctx">
+  <div class="hl-ctx-inner">
+    <div class="hl-ctx-group">
+      <div class="hl-seg" role="group" aria-label="Window" data-seg>
+        <button class="hl-seg-opt" type="button" aria-pressed="false">7 days</button>
+        <button class="hl-seg-opt" type="button" aria-pressed="true">30 days</button>
+        <button class="hl-seg-opt" type="button" aria-pressed="false">90 days</button>
+        <button class="hl-seg-opt" type="button" aria-pressed="false">Year</button>
+      </div>
+    </div>
+    <div class="hl-ctx-group">
+      <div class="hl-seg" role="group" aria-label="Palette" id="palettes" data-seg></div>
+    </div>
+  </div>
+</div>
+
+<main class="hl-page" id="main">
+  <div class="hl-page-head">
+    <h1>Overview</h1>
+    <p class="hl-intro">Every component in hairline.css on one page. Switch the palette and theme above.</p>
+    <p class="hl-scope">Oct 12 – Nov 10, 2026 · 30 days</p>
+  </div>
+
+  <div class="hl-board">
+    <section class="hl-section" id="s-kpis">
+      <div class="hl-section-head">
+        <div class="hl-section-title"><h2>This window</h2><p class="hl-note">Compared with the 30 days before.</p></div>
+        <button class="hl-collapse" type="button" aria-expanded="true" aria-label="Collapse This window"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      </div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div class="hl-kpis">
+          <div class="hl-kpi"><div class="hl-kpi-label">Spend</div><div class="hl-kpi-row"><div class="hl-kpi-value">$4,812.40</div><svg class="hl-spark" width="96" height="28" viewBox="0 0 96 28" aria-hidden="true"><polyline fill="none" stroke="var(--hl-chart-line)" stroke-width="1.5" stroke-linejoin="round" points="2,20 12,18 22,22 32,14 42,16 52,10 62,12 72,8 82,9 94,4"/></svg></div><div class="hl-kpi-note"><span class="hl-delta" data-dir="up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg>+12%</span> vs $4,296.10</div></div>
+          <div class="hl-kpi"><div class="hl-kpi-label">Requests</div><div class="hl-kpi-row"><div class="hl-kpi-value">18,204</div></div><div class="hl-kpi-note"><span class="hl-delta" data-dir="down"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></svg>−4%</span> vs 18,960</div></div>
+          <div class="hl-kpi"><div class="hl-kpi-label">Active people</div><div class="hl-kpi-row"><div class="hl-kpi-value">142</div></div><div class="hl-kpi-note"><span class="hl-delta" data-dir="none">No change</span></div></div>
+          <div class="hl-kpi is-alert"><div class="hl-kpi-label">Over limit</div><div class="hl-kpi-row"><div class="hl-kpi-value">3</div></div><div class="hl-kpi-note">Needs a look</div></div>
+        </div>
+        <ul class="hl-insights"><li>Spend rose 12% on two more working days.</li><li>Most of the rise is one model.</li></ul>
+      </div></div>
+    </section>
+
+    <section class="hl-section" data-width="half">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Budget</h2><p class="hl-note">The mark is where even pace would be today.</p></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div class="hl-hero-value">$612.08</div>
+        <div class="hl-meter"><div class="hl-meter-fill" style="--value:.68"></div><div class="hl-meter-mark" style="--mark:55%"></div></div>
+        <p class="hl-status">68% of $900 used, 55% of the month gone.</p>
+        <div class="hl-meter" data-status="over"><div class="hl-meter-fill" style="--value:1"></div></div>
+        <p class="hl-status">Team B: 104% of $500. Over by $20.10.</p>
+      </div></div>
+    </section>
+
+    <section class="hl-section" data-width="half">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Stats</h2></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div class="hl-stats">
+          <div><div class="hl-stat-label">Per person</div><div class="hl-stat-value">$33.89</div><div class="hl-stat-note">median $21.40</div></div>
+          <div><div class="hl-stat-label">Busiest day</div><div class="hl-stat-value">Nov 4</div><div class="hl-stat-note">$402.11</div></div>
+          <div><div class="hl-stat-label">Tokens</div><div class="hl-stat-value">1.9B</div><div class="hl-stat-note">84% cached</div></div>
+        </div>
+        <div class="hl-heat" style="margin-top:18px" id="heat" aria-hidden="true"></div>
+      </div></div>
+    </section>
+
+    <section class="hl-section">
+      <div class="hl-section-head">
+        <div class="hl-section-title"><h2>Daily spend</h2><p class="hl-note">Hover a bar. Every value is also in the table below.</p></div>
+        <div class="hl-section-actions">
+          <button class="hl-chip" type="button" aria-pressed="true">Bars</button>
+          <button class="hl-chip" type="button" aria-pressed="false">Line</button>
+        </div>
+      </div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div id="chart"></div>
+        <div class="hl-legend" id="legend"></div>
+      </div></div>
+    </section>
+
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>People</h2></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div class="hl-table-tools"><input class="hl-input" type="search" placeholder="Filter people" aria-label="Filter people"><span class="hl-count">4 of 142</span></div>
+        <div class="hl-table-wrap">
+          <table class="hl-table">
+            <thead><tr><th>Person</th><th data-prio="low">Team</th><th class="hl-numeric" aria-sort="descending"><button class="hl-sort" type="button">Spend <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></svg></button></th><th class="hl-numeric"><button class="hl-sort" type="button">Requests <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></svg></button></th></tr></thead>
+            <tbody>
+              <tr class="is-clickable"><td>Ada Park<span class="hl-subtext">ada.park@example.com</span></td><td data-prio="low">Platform</td><td class="hl-numeric has-bar">$412.80<span class="hl-cell-bar"><i style="--value:1"></i></span></td><td class="hl-numeric">1,204</td></tr>
+              <tr class="is-clickable"><td>Rui Okafor<span class="hl-subtext">rui.okafor@example.com</span></td><td data-prio="low">Data</td><td class="hl-numeric has-bar">$298.15<span class="hl-cell-bar"><i style="--value:.72"></i></span></td><td class="hl-numeric">980</td></tr>
+              <tr class="is-clickable"><td>Mina Solberg<span class="hl-subtext">mina.solberg@example.com</span></td><td data-prio="low">Design</td><td class="hl-numeric has-bar">$141.02<span class="hl-cell-bar"><i style="--value:.34"></i></span></td><td class="hl-numeric">512</td></tr>
+              <tr class="is-clickable"><td>Theo Laurent<span class="hl-subtext">theo.laurent@example.com</span></td><td data-prio="low">Support</td><td class="hl-numeric has-bar">$38.60<span class="hl-cell-bar"><i style="--value:.09"></i></span></td><td class="hl-numeric">141</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="hl-section" data-width="half">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Ask for more</h2><p class="hl-note">Fields are a hairline. The one solid thing is the primary action.</p></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <form class="hl-form" onsubmit="event.preventDefault(); window.hlToast('Request sent. You will hear back by email.')">
+          <label class="hl-label">Amount<input class="hl-input" inputmode="decimal" value="200"></label>
+          <label class="hl-label">Reason<select class="hl-select"><option>New project</option><option>Deadline</option><option>Other</option></select></label>
+          <label class="hl-label">Note<textarea class="hl-input" placeholder="What it is for"></textarea></label>
+          <label class="hl-label">Email<input class="hl-input" aria-invalid="true" value="ada.park@"><span class="hl-field-error">Use a full email address.</span></label>
+          <div style="display:flex; gap:18px; align-items:center"><button class="hl-button hl-button-primary" type="submit">Send request</button><button class="hl-button" type="reset">Clear</button></div>
+        </form>
+      </div></div>
+    </section>
+
+    <section class="hl-section" data-width="half">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Alerts</h2></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <label style="display:flex; gap:10px; align-items:center; font-size:13.5px"><span class="hl-switch"><input type="checkbox" checked aria-label="Email me at 80%"><i></i></span>Email me at 80%</label>
+        <div style="margin-top:12px; max-width:280px">
+          <label class="hl-check"><input type="checkbox" checked>Daily digest<small>9:00</small></label>
+          <label class="hl-check"><input type="checkbox">Weekly summary<small>Mon</small></label>
+          <label class="hl-check"><input type="checkbox" checked>Over limit<small>now</small></label>
+        </div>
+        <p class="hl-callout" style="margin-top:16px"><strong>Heads up.</strong> Limits reset on the 1st at 00:00 UTC.</p>
+        <div class="hl-quote">“Can I get 200 more this month for the launch?”</div>
+        <details><summary>How alerts are sent</summary><p class="hl-note">One message per threshold per month. Turning one off stops it at once.</p></details>
+        <div style="display:flex; gap:18px; margin-top:12px">
+          <button class="hl-button" type="button" id="open-dialog">Open dialog</button>
+          <button class="hl-button" type="button" id="open-drawer">Open drawer</button>
+          <button class="hl-button" type="button" onclick="window.hlToast('Saved.')">Show toast</button>
+        </div>
+        <div class="hl-wait" style="margin-top:14px" aria-label="Loading"></div>
+      </div></div>
+    </section>
+
+    <section class="hl-section">
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Share by category</h2><p class="hl-note">Treemap tiles in the categorical data colors.</p></div></div>
+      <div class="hl-section-body"><div class="hl-section-inner">
+        <div class="hl-treemap" id="treemap" style="height:300px"></div>
+      </div></div>
+    </section>
+  </div>
+</main>
+
+<dialog class="hl-dialog" id="dialog" aria-labelledby="dialog-title">
+  <div class="hl-dialog-head"><h2 id="dialog-title">Ada Park</h2><button class="hl-button hl-icon-button" type="button" aria-label="Close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="hl-dialog-body"><p class="hl-intro">A dialog has the page background, a sticky heading, and one hairline.</p></div>
+</dialog>
+<dialog class="hl-dialog hl-drawer" id="drawer" aria-labelledby="drawer-title">
+  <div class="hl-dialog-head"><h2 id="drawer-title">Details</h2><button class="hl-button hl-icon-button" type="button" aria-label="Close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="hl-dialog-body"><p class="hl-intro">The drawer slides in from the end edge on the drawer curve.</p></div>
+</dialog>
+<dialog class="hl-palette" id="palette" aria-label="Command palette">
+  <label class="hl-palette-field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m21 21-4.3-4.3M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"/></svg><input type="text" placeholder="Jump to…" aria-label="Jump to"></label>
+  <ul class="hl-palette-list" role="listbox">
+    <li class="hl-palette-group" role="presentation">Pages</li>
+    <li class="hl-palette-item" role="option" aria-selected="true"><span class="hl-palette-label">Overview</span><span class="hl-palette-hint">Page</span></li>
+    <li class="hl-palette-item" role="option" aria-selected="false"><span class="hl-palette-label">People</span><span class="hl-palette-hint">Page</span></li>
+    <li class="hl-palette-group" role="presentation">People</li>
+    <li class="hl-palette-item" role="option" aria-selected="false"><span class="hl-palette-label">Ada Park</span><span class="hl-palette-hint">Platform</span></li>
+  </ul>
+</dialog>
+
+<script>
+(function () {
+  var root = document.body;
+  var NS = "http://www.w3.org/2000/svg";
+  function svg(name, attrs, text) { var n = document.createElementNS(NS, name); for (var k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; return n; }
+
+  function syncThumb(host) {
+    var thumb = host.querySelector(":scope > .hl-thumb");
+    if (!thumb) { thumb = document.createElement("span"); thumb.className = "hl-thumb"; thumb.setAttribute("aria-hidden", "true"); host.prepend(thumb); }
+    var on = host.querySelector('[aria-pressed="true"], [aria-current="page"]');
+    if (!on || !on.offsetWidth) { thumb.style.opacity = "0"; return; }
+    thumb.style.opacity = "1";
+    thumb.style.transform = "translateX(" + on.offsetLeft + "px) scaleX(" + on.offsetWidth + ")";
+  }
+  function wire(host, onPick) {
+    host.addEventListener("click", function (e) {
+      var b = e.target.closest("button, a"); if (!b || !host.contains(b)) return;
+      if (b.tagName === "A") { e.preventDefault(); host.querySelectorAll("a").forEach(function (a) { a.removeAttribute("aria-current"); }); b.setAttribute("aria-current", "page"); }
+      else host.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      syncThumb(host); if (onPick) onPick(b);
+    });
+    new ResizeObserver(function () { syncThumb(host); }).observe(host);
+  }
+
+  // Palette and theme. Both snap: colors never fade across the page.
+  var palettes = ["bronze", "graphite", "moss", "oxblood", "amber", "iris", "mono"];
+  var host = document.getElementById("palettes");
+  var params = new URLSearchParams(location.search);
+  var chosen = params.get("palette") || "bronze";
+  palettes.forEach(function (p) { var b = document.createElement("button"); b.type = "button"; b.className = "hl-seg-opt"; b.textContent = p[0].toUpperCase() + p.slice(1); b.dataset.key = p; b.setAttribute("aria-pressed", String(p === chosen)); host.appendChild(b); });
+  function snap(fn) { var h = document.documentElement; h.classList.add("hl-no-transitions"); fn(); void h.offsetWidth; requestAnimationFrame(function () { h.classList.remove("hl-no-transitions"); }); }
+  function setPalette(p) { snap(function () { if (p === "bronze") delete root.dataset.palette; else root.dataset.palette = p; }); }
+  setPalette(chosen);
+  var themeBtn = document.getElementById("theme");
+  function setTheme(t) { snap(function () { if (t === "light") root.dataset.theme = "light"; else delete root.dataset.theme; }); themeBtn.textContent = t === "light" ? "Dark" : "Light"; }
+  setTheme(params.get("theme") === "light" ? "light" : "dark");
+  themeBtn.addEventListener("click", function () { setTheme(root.dataset.theme === "light" ? "dark" : "light"); });
+
+  document.querySelectorAll("[data-seg], #nav").forEach(function (h) { wire(h, h === host ? function (b) { setPalette(b.dataset.key); } : null); });
+  document.querySelectorAll(".hl-chip").forEach(function (c) { c.addEventListener("click", function () { c.parentElement.querySelectorAll(".hl-chip").forEach(function (x) { x.setAttribute("aria-pressed", String(x === c)); }); }); });
+
+  // Collapse animates grid rows, so nothing is measured.
+  document.querySelectorAll(".hl-collapse").forEach(function (b) { b.addEventListener("click", function () { var s = b.closest(".hl-section"); var c = s.classList.toggle("is-collapsed"); b.setAttribute("aria-expanded", String(!c)); }); });
+
+  // Tooltip: enhances, never gates.
+  var tip = document.createElement("div"); tip.className = "hl-tip"; tip.setAttribute("role", "tooltip"); tip.hidden = true; document.body.appendChild(tip);
+  function showTip(title, value, x, y) { tip.replaceChildren(); var t = document.createElement("div"); t.className = "hl-tip-title"; t.textContent = title; var r = document.createElement("div"); r.className = "hl-tip-row"; var i = document.createElement("i"); i.style.background = "var(--hl-chart-bar)"; var s = document.createElement("strong"); s.textContent = value; var l = document.createElement("span"); l.textContent = "spend"; r.append(i, s, l); tip.append(t, r); tip.hidden = false; tip.style.transform = "translate(" + Math.min(x + 14, innerWidth - tip.offsetWidth - 8) + "px," + (y + 14) + "px)"; tip.classList.add("is-in"); }
+  function hideTip() { tip.classList.remove("is-in"); }
+
+  // Bar chart, repainted on width change.
+  var days = []; for (var d = 0; d < 30; d++) days.push({ label: "Nov " + (d + 1), value: Math.round(80 + 120 * Math.abs(Math.sin(d * 1.7)) + d * 3 + (d % 7 > 4 ? -60 : 0)) });
+  var fmt = function (v) { return "$" + v; };
+  function paintChart(width) {
+    var H = 240, L = 44, R = 4, T = 8, B = 24;
+    var max = Math.max.apply(null, days.map(function (r) { return r.value; }));
+    var raw = max / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))); var step = [1, 2, 5, 10].map(function (m) { return m * mag; }).find(function (n) { return n >= raw; });
+    var ticks = []; for (var v = 0; v <= max + step * .999; v += step) ticks.push(v);
+    var top = ticks[ticks.length - 1]; var y = function (v) { return T + (1 - v / top) * (H - T - B); };
+    var s = svg("svg", { class: "hl-chart", viewBox: "0 0 " + width + " " + H, role: "img", "aria-label": "Daily spend for 30 days" });
+    ticks.forEach(function (t) { s.appendChild(svg("line", { class: t ? "hl-gridline" : "hl-baseline", x1: L, x2: width - R, y1: y(t), y2: y(t) })); s.appendChild(svg("text", { x: L - 8, y: y(t) + 4, "text-anchor": "end" }, fmt(t))); });
+    var band = (width - L - R) / days.length, gap = Math.min(6, band * .25), g = svg("g", {});
+    var every = Math.ceil(days.length / Math.max(1, Math.floor(width / 70)));
+    days.forEach(function (row, i) {
+      var x = L + i * band + gap / 2;
+      var rect = svg("rect", { class: "hl-bar", x: x, y: y(row.value), width: Math.max(1, band - gap), height: y(0) - y(row.value) });
+      rect.addEventListener("pointerenter", function (e) { g.classList.add("has-hot"); rect.classList.add("is-hot"); showTip(row.label, fmt(row.value), e.clientX, e.clientY); });
+      rect.addEventListener("pointerleave", function () { g.classList.remove("has-hot"); rect.classList.remove("is-hot"); hideTip(); });
+      g.appendChild(rect);
+      if (i % every === 0) s.appendChild(svg("text", { x: x + (band - gap) / 2, y: H - 6, "text-anchor": "middle" }, row.label));
+    });
+    s.appendChild(g);
+    document.getElementById("chart").replaceChildren(s);
+  }
+  var chartBox = document.getElementById("chart"), lastW = 0;
+  new ResizeObserver(function () { var w = Math.round(chartBox.getBoundingClientRect().width); if (w && w !== lastW) { lastW = w; paintChart(w); } }).observe(chartBox);
+
+  var legend = document.getElementById("legend");
+  ["Chat", "Agent", "Review", "Search", "Docs", "Tests", "Infra", "Other"].forEach(function (n, i) { var b = document.createElement("button"); b.type = "button"; b.className = "hl-legend-item"; b.setAttribute("aria-pressed", "true"); b.style.setProperty("--c", "var(--hl-data-" + (i + 1) + ")"); var dot = document.createElement("i"); b.append(dot, n); b.addEventListener("click", function () { b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); }); legend.appendChild(b); });
+
+  // Treemap: a fixed slice-and-dice layout, enough to show the tiles.
+  var tm = document.getElementById("treemap");
+  var parts = [["Agent", 38], ["Chat", 22], ["Review", 14], ["Search", 9], ["Docs", 7], ["Tests", 5], ["Infra", 3], ["Other", 2]];
+  function paintTree() {
+    var W = tm.clientWidth, H = tm.clientHeight; tm.replaceChildren();
+    var x = 0, y = 0, w = W, h = H, rest = 100;
+    parts.forEach(function (p, i) {
+      var share = p[1] / rest, vertical = w > h, tw = vertical ? w * share : w, th = vertical ? h : h * share;
+      if (i === parts.length - 1) { tw = w; th = h; }
+      var b = document.createElement("button"); b.type = "button"; b.className = "hl-tile"; b.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + tw + "px;height:" + th + "px;--c:var(--hl-data-" + (i + 1) + ")";
+      if (tw > 70 && th > 50) { var n = document.createElement("span"); n.className = "hl-tile-name"; n.textContent = p[0]; var v = document.createElement("span"); v.className = "hl-tile-value"; v.textContent = p[1] + "%"; b.append(n, v); }
+      b.setAttribute("aria-label", p[0] + " " + p[1] + "%");
+      tm.appendChild(b);
+      if (vertical) { x += tw; w -= tw; } else { y += th; h -= th; } rest -= p[1];
+    });
+  }
+  new ResizeObserver(paintTree).observe(tm);
+
+  var heat = document.getElementById("heat");
+  for (var k = 0; k < 7 * 20; k++) { var c = document.createElement("i"); if (k > 7 * 20 - 4) c.dataset.future = ""; else c.dataset.level = String([0, 1, 2, 3, 4, 2, 1][(k * 7 + (k >> 3)) % 7]); heat.appendChild(c); }
+
+  // Toast: visible box is aria-hidden; a live region carries the words.
+  var toast = document.createElement("div"); toast.className = "hl-toast"; toast.setAttribute("aria-hidden", "true"); toast.hidden = true;
+  var live = document.createElement("div"); live.className = "hl-sr"; live.setAttribute("role", "status"); live.setAttribute("aria-live", "polite");
+  document.body.append(toast, live);
+  var tt = 0;
+  window.hlToast = function (text) { clearTimeout(tt); live.textContent = ""; requestAnimationFrame(function () { live.textContent = text; }); toast.textContent = text; if (toast.hidden) { toast.hidden = false; void toast.offsetWidth; } toast.classList.add("is-in"); tt = setTimeout(function () { toast.classList.remove("is-in"); }, 3600); };
+
+  var pal = document.getElementById("palette");
+  document.getElementById("open-palette").addEventListener("click", function () { pal.showModal(); pal.querySelector("input").focus(); });
+  pal.addEventListener("click", function (e) { if (e.target === pal) pal.close(); });
+  document.addEventListener("keydown", function (e) { if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) { e.preventDefault(); pal.open ? pal.close() : (pal.showModal(), pal.querySelector("input").focus()); } });
+  document.getElementById("open-dialog").addEventListener("click", function () { document.getElementById("dialog").showModal(); });
+  document.getElementById("open-drawer").addEventListener("click", function () { document.getElementById("drawer").showModal(); });
+  ["dialog", "drawer"].forEach(function (id) { var d = document.getElementById(id); d.addEventListener("click", function (e) { if (e.target === d) d.close(); }); });
+})();
+</script>
+</body>
+</html>

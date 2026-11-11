@@ -1,0 +1,5 @@
+node_modules/
+web/ui/dist/
+/server
+/sample
+.DS_Store

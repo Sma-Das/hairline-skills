@@ -1,0 +1,82 @@
+/* Chart classes beyond hairline.css. Load after palettes.css and hairline.css.
+   Token-only: every color is a --hl- token or a series color in --c / inline fill. */
+
+/* Line chart: one series, running (line) or per step (bars), on one scale. */
+.hl-line-bars, .hl-line, .hl-end { transition: opacity 160ms ease-out; }
+.hl-chart[data-mode="daily"] .hl-line, .hl-chart[data-mode="daily"] .hl-end { opacity: 0; }
+.hl-chart[data-mode="daily"] .hl-end-label { display: none; }
+.hl-chart[data-mode="running"] .hl-line-bars { opacity: 0; }
+.hl-end { fill: var(--hl-chart-line); }
+.hl-chart .hl-end-label { fill: var(--hl-ink); font-weight: 500; }
+.hl-chart .hl-limit-label, .hl-chart .hl-axis-title { fill: var(--hl-muted); }
+
+/* Stacked bands. A page-colored stroke is the gap between neighbors. */
+.hl-band { stroke: var(--hl-bg); stroke-width: 1; stroke-linejoin: round; transition: opacity 100ms ease-out; }
+.hl-band.is-clickable { cursor: pointer; }
+/* hairline.css dims unpressed legend items. Here unpressed is normal until one is soloed. */
+.hl-legend:not(.is-solo) .hl-legend-item { opacity: 1; }
+.hl-legend-item[aria-pressed="true"] { color: var(--hl-ink); text-decoration: underline; text-decoration-color: var(--hl-rule); text-underline-offset: 4px; }
+
+/* Period bars with a running total. Bars are data, so they clear 3:1 against the page. */
+.hl-combo-bar { fill: color-mix(in srgb, var(--hl-chart-bar) 62%, var(--hl-bg)); transition: fill 100ms ease-out; }
+.hl-combo-bar.is-hot { fill: var(--hl-chart-bar); }
+.hl-combo-dot.is-hot { fill: var(--hl-chart-line); }
+.hl-hit { fill: transparent; }
+.hl-key { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px; color: var(--hl-faint); font-size: 12px; }
+.hl-key span { display: inline-flex; align-items: center; gap: 6px; }
+.hl-key i { display: block; width: 8px; height: 8px; background: color-mix(in srgb, var(--hl-chart-bar) 62%, var(--hl-bg)); }
+.hl-key i.is-line { height: 1.5px; background: var(--hl-chart-line); }
+
+/* A line that draws itself in once. Needs pathLength="1" on the element. */
+.hl-draw-in { stroke-dasharray: 1; stroke-dashoffset: 1; animation: hl-draw 480ms cubic-bezier(0.23, 1, 0.32, 1) 120ms forwards; }
+@keyframes hl-draw { to { stroke-dashoffset: 0; } }
+
+/* Scatter. Translucent fill, solid edge, so overlaps stay readable. */
+.hl-scatter-dot { fill-opacity: .55; stroke-width: 1; transition: fill-opacity 100ms ease-out, opacity 100ms ease-out; }
+.hl-scatter-dot.is-hot { fill-opacity: .9; }
+.hl-chart .hl-scatter-label { fill: var(--hl-ink); font-size: 12px; pointer-events: none; }
+
+/* Treemap. Tile placement is inline left/top/width/height, in percent. */
+.hl-treemap { container-type: inline-size; }
+.hl-tile { transition: opacity 120ms ease-out; }
+.hl-tile-name, .hl-tile-value { transition: opacity 120ms ease-out; }
+.hl-tile-name { overflow: hidden; max-width: 100%; }
+/* Out of the flow as well as invisible, so a hidden figure cannot crowd the name out. */
+.hl-tile > .is-off { position: absolute; opacity: 0; }
+.hl-tile-name.is-off { top: 0; left: 0; }
+.hl-tile-value.is-off { bottom: 0; left: 0; }
+.hl-tile.is-exit { pointer-events: none; }
+.hl-treemap.has-link .hl-tile:not(.is-linked) { opacity: .4; }
+.hl-treemap-empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--hl-faint); font-size: 14px; }
+@container (max-width: 560px) { .hl-treemap { height: 340px; } }
+
+/* Calendar heatmap: a year of weeks across the full width. */
+.hl-cal { display: grid; max-width: 100%; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--hl-line-strong) transparent; }
+.hl-cal-grid { display: grid; grid-template-columns: max-content repeat(var(--weeks, 1), minmax(10px, 1fr)); grid-template-rows: 16px repeat(7, auto); gap: 2px; min-width: calc(var(--weeks, 1) * 12px + 32px); align-items: center; }
+.hl-cal-grid i, .hl-cal-legend i { display: block; aspect-ratio: 1; background: var(--hl-surface); transition: box-shadow 80ms ease-out; }
+.hl-cal-legend i { width: 10px; }
+.hl-cal i[data-level="1"] { background: color-mix(in srgb, var(--hl-chart-bar) 22%, var(--hl-bg)); }
+.hl-cal i[data-level="2"] { background: color-mix(in srgb, var(--hl-chart-bar) 45%, var(--hl-bg)); }
+.hl-cal i[data-level="3"] { background: color-mix(in srgb, var(--hl-chart-bar) 72%, var(--hl-bg)); }
+.hl-cal i[data-level="4"] { background: var(--hl-chart-line); }
+.hl-cal i[data-future] { background: transparent; box-shadow: inset 0 0 0 1px var(--hl-line); }
+.hl-cal i[data-pad] { background: transparent; box-shadow: none; }
+.hl-cal-grid i[data-latest] { box-shadow: 0 0 0 1px var(--hl-muted); }
+@media (hover: hover) and (pointer: fine) { .hl-cal-grid i[data-day]:hover { box-shadow: 0 0 0 1px var(--hl-ink); } }
+/* Columns fade in from the left, 8ms apart, once. */
+.hl-cal.is-filling .hl-cal-grid i { animation: hl-cell-in 300ms ease-out both; animation-delay: calc(var(--col, 0) * 8ms); }
+@keyframes hl-cell-in { from { opacity: 0; } }
+.hl-cal-dow { grid-column: 1; padding-inline-end: 8px; color: var(--hl-faint); font-size: 11.5px; line-height: 1; }
+.hl-cal-month { grid-row: 1; align-self: end; color: var(--hl-faint); font-size: 11.5px; line-height: 1; white-space: nowrap; }
+.hl-cal-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; color: var(--hl-faint); font-size: 12px; font-variant-numeric: tabular-nums; }
+.hl-cal-legend { display: flex; justify-content: flex-end; align-items: center; gap: 3px; margin-top: 4px; color: var(--hl-faint); font-size: 12px; }
+.hl-cal-ahead { margin-inline-end: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hl-draw-in { animation: none; stroke-dashoffset: 0; }
+  .hl-cal.is-filling .hl-cal-grid i { animation: none; }
+}
+@media (forced-colors: active) {
+  .hl-tile::before { border: 1px solid CanvasText; }
+  .hl-band { stroke: Canvas; }
+}
