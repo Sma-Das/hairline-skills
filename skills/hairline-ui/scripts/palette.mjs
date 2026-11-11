@@ -4,10 +4,10 @@
 //   node palette.mjs --list                      preset names
 //   node palette.mjs --preset moss               one preset as CSS
 //   node palette.mjs --all > palettes.css        every preset as CSS
-//   node palette.mjs --neutral 230:0.012 --rule 230:0.08 --focus 200 --name harbor
+//   node palette.mjs --neutral 230:0.012 --rule 250:0.20 --focus 35 --name harbor
 //
 // --neutral HUE:CHROMA   tint of the gray ramp (chroma 0 to 0.02; 0 is pure gray)
-// --rule HUE:CHROMA      the signature color: underlines, active marks, chart bars (0.03 to 0.12)
+// --rule HUE:CHROMA      the signature color: underlines, active marks, chart bars (0.16 to 0.24 for vivid accents)
 // --focus HUE            focus ring and text selection; pick a hue far from the rule
 // --up HUE --down HUE    direction colors for deltas (defaults: warm 45, teal-green 160)
 // --pure-black false     use a near-black page instead of #000 in dark mode
@@ -58,21 +58,23 @@ const ramps = {
 };
 
 // [dark L, light L] for accent roles. Chroma is the caller's.
-const accentL = { rule: [0.75, 0.47], focus: [0.64, 0.5], up: [0.75, 0.52], down: [0.73, 0.5] };
+const accentL = { rule: [0.78, 0.52], focus: [0.72, 0.5], up: [0.77, 0.52], down: [0.76, 0.5] };
 
 export const presets = {
-  bronze: { label: "Bronze. Warm graphite with a muted bronze rule. The original look.", neutral: [55, 0.012], rule: [70, 0.045], focus: 262, up: 45, down: 155 },
-  graphite: { label: "Graphite & Sky. Cool gray, steel-blue rule, cyan focus. Engineering and infra tools.", neutral: [250, 0.012], rule: [240, 0.075], focus: 222, up: 50, down: 175 },
-  moss: { label: "Moss. Green-gray with a sage rule. Calm, outdoorsy, sustainability, health.", neutral: [145, 0.01], rule: [135, 0.07], focus: 258, up: 60, down: 205 },
-  oxblood: { label: "Oxblood. Warm gray with a dusty rose rule. Editorial, finance, legal.", neutral: [20, 0.01], rule: [17, 0.09], focus: 258, up: 68, down: 165 },
-  amber: { label: "Amber. Neutral charcoal with a gold rule. Ops consoles, trading, night use.", neutral: [75, 0.008], rule: [78, 0.11], focus: 255, up: 33, down: 160 },
-  iris: { label: "Iris. Violet-gray with a lavender rule and teal focus. Creative and AI products.", neutral: [285, 0.014], rule: [290, 0.1], focus: 205, up: 48, down: 165 },
-  mono: { label: "Mono. Pure gray, no hue at all. Brand-neutral, white-label, or a strong logo.", neutral: [0, 0], rule: [0, 0], focus: 260, up: 48, down: 160 },
+  bronze: { label: "Bronze. Warm graphite with a bright copper-orange accent. Finance and usage desks.", neutral: [55, 0.012], rule: [45, 0.19], focus: 262, up: 40, down: 160 },
+  graphite: { label: "Graphite & Sky. Cool gray with a vivid sky-blue accent and orange focus. Engineering and infra tools.", neutral: [250, 0.012], rule: [250, 0.20], focus: 35, up: 40, down: 160 },
+  moss: { label: "Moss. Green-gray with a saturated leaf-green accent and violet focus. Health and sustainability.", neutral: [145, 0.01], rule: [145, 0.20], focus: 285, up: 40, down: 195 },
+  oxblood: { label: "Oxblood. Warm gray with a vivid red-coral accent and blue focus. Editorial, finance, and legal.", neutral: [20, 0.01], rule: [15, 0.21], focus: 250, up: 65, down: 160 },
+  amber: { label: "Amber. Neutral charcoal with a bright gold accent and blue focus. Ops consoles and trading.", neutral: [75, 0.008], rule: [80, 0.18], focus: 255, up: 35, down: 160 },
+  iris: { label: "Iris. Violet-gray with a saturated violet accent and emerald focus. Creative tools and AI products.", neutral: [285, 0.014], rule: [290, 0.23], focus: 160, up: 40, down: 160 },
+  mono: { label: "Mono. Neutral gray chrome with a bright categorical palette. White-label or a strong logo.", neutral: [0, 0], rule: [0, 0], focus: 260, up: 40, down: 160 },
 };
 
 const floors = [
-  ["ink", "bg", 7], ["muted", "bg", 4.5], ["faint", "bg", 4.5], ["faint", "surface", 4.5], ["muted", "surface", 4.5],
-  ["rule", "bg", 3], ["focus", "bg", 3], ["up", "bg", 4.5], ["down", "bg", 4.5],
+  ["ink", "bg", 12], ["muted", "bg", 4.5], ["faint", "bg", 4.5], ["faint", "surface", 4.5], ["muted", "surface", 4.5],
+  ["rule", "bg", 3], ["rule", "surface", 3], ["focus", "bg", 3], ["focus", "surface", 3],
+  ["up", "bg", 4.5], ["up", "surface", 4.5], ["down", "bg", 4.5], ["down", "surface", 4.5],
+  ["chart-line", "bg", 3], ["chart-bar", "bg", 3],
 ];
 
 export function build({ neutral, rule, focus, up = 45, down = 160, pureBlack = true }) {
@@ -90,21 +92,22 @@ export function build({ neutral, rule, focus, up = 45, down = 160, pureBlack = t
       t["line-strong"] = hex(0.35, neutral[1] * 0.8, neutral[0]);
     }
     t.rule = hex(accentL.rule[i], rule[1] * (i ? 1.15 : 1), rule[0]);
-    t.focus = hex(accentL.focus[i], i ? 0.19 : 0.16, focus);
-    t.up = hex(accentL.up[i], i ? 0.15 : 0.12, up);
-    t.down = hex(accentL.down[i], i ? 0.11 : 0.1, down);
-    // Chart ink: the running line and the bar fill. The bar reuses the rule.
-    t["chart-line"] = mode === "dark" ? hex(0.92, neutral[1] * 0.6, neutral[0]) : t.ink;
+    t.focus = hex(accentL.focus[i], 0.21, focus);
+    t.up = hex(accentL.up[i], 0.20, up);
+    t.down = hex(accentL.down[i], 0.18, down);
+    // Lines and bars carry the saturated accent. Mono keeps its neutral chart ink.
+    t["chart-line"] = rule[1] ? t.rule : mode === "dark" ? hex(0.92, 0, 0) : t.ink;
     t["chart-bar"] = t.rule;
     out[mode] = t;
   }
   return out;
 }
 
-// One categorical set per mode: even lightness, spaced hues, so no series shouts.
+// Bright, saturated categories retain their hue across appearances; light mode
+// lowers lightness to keep chart marks distinct against the page.
 export function dataPalette() {
-  const hues = [40, 290, 230, 150, 75, 340, 195, 110];
-  return { dark: hues.map((h) => hex(0.74, 0.11, h)), light: hues.map((h) => hex(0.54, 0.12, h)) };
+  const hues = [40, 290, 250, 160, 80, 345, 195, 135];
+  return { dark: hues.map((h) => hex(0.74, 0.20, h)), light: hues.map((h) => hex(0.59, 0.19, h)) };
 }
 
 export function check(tokens) {
@@ -115,6 +118,16 @@ export function check(tokens) {
       const v = contrast(t[a], t[b]);
       if (v < min) fails.push(`${mode} ${a} on ${b}: ${v.toFixed(2)} < ${min}`);
     }
+    dataPalette()[mode].forEach((color, index) => {
+      for (const background of ["bg", "surface"]) {
+        const ratio = contrast(color, t[background]);
+        if (ratio < 3) fails.push(`${mode} data-${index + 1} on ${background}: ${ratio.toFixed(2)} < 3`);
+      }
+      // Match the brightest treemap hover fill, not only its undimmed source hue.
+      const hover = "#" + color.slice(1).match(/../g).map((c) => Math.round(parseInt(c, 16) * 0.65).toString(16).padStart(2, "0")).join("");
+      const ratio = contrast("#ffffff", hover);
+      if (ratio < 4.5) fails.push(`${mode} white on data-${index + 1} tile hover: ${ratio.toFixed(2)} < 4.5`);
+    });
   }
   return fails;
 }

@@ -32,7 +32,7 @@ The skills work with agents that support the [Agent Skills format](https://agent
 - “Use hairline-charts to show monthly totals and a running total.”
 - “Use hairline-motion to make this drawer interruptible and respect reduced motion.”
 
-Color recommendations cover bronze, graphite, moss, oxblood, amber, iris, and monochrome. Dark and light themes share semantic tokens; a generator creates custom palettes and checks contrast. The style does not require black and bronze.
+Bright, saturated color recommendations cover copper-orange, sky blue, leaf green, red-coral, gold, violet, and monochrome chrome with vivid categorical colors. Dark and light themes share semantic tokens; a generator creates custom palettes and checks contrast. The style does not require black and bronze.
 
 ## Previews
 

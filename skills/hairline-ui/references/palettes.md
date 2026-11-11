@@ -25,7 +25,8 @@ do not borrow one role's color for another's job.
   They are warm and cool, never pure red and green, and they always travel with an
   arrow and a sign. Do not assume up is bad: for spend it is, for revenue it is not.
   When up is good, swap the classes or the tokens for that figure, not the arrow.
-- `chart-line`: the single series line and the sparkline. Near ink, so it reads first.
+- `chart-line`: the single-series line and sparkline. The saturated signature hue;
+  `mono` uses near-ink instead.
 - `chart-bar`: the single-series bar fill. Defaults to the rule.
 - `data-1..8`: categories (series, legend dots, treemap tiles). Even OKLCH lightness,
   hues spread around the wheel, every one 3:1 or more on bg. Assign them in order of
@@ -35,23 +36,24 @@ do not borrow one role's color for another's job.
 
 Each comes in dark and light. All pass the floors above (the generator prints the ratios).
 
-- `bronze` (default, no attribute): warm graphite neutrals, muted bronze rule, blue
-  focus. Quiet, premium, finance and usage desks. The original look.
-- `graphite`: cool gray, steel-blue rule, cyan focus. Engineering, infra, developer tools.
-- `moss`: green-gray, sage rule. Calm. Health, sustainability, outdoors, wellbeing.
-- `oxblood`: warm gray, dusty rose rule. Editorial, legal, finance with a human tone.
-- `amber`: neutral charcoal, gold rule. Ops consoles, trading, long night sessions.
-- `iris`: violet-gray, lavender rule, teal focus. Creative tools and AI products.
-- `mono`: no hue. White-label, or a product whose logo or photography carries the color.
+- `bronze` (default, no attribute): warm graphite neutrals, bright copper-orange
+  accent, blue focus. Finance and usage desks.
+- `graphite`: cool gray, vivid sky-blue accent, orange focus. Engineering, infra, developer tools.
+- `moss`: green-gray, saturated leaf-green accent. Health, sustainability, outdoors, wellbeing.
+- `oxblood`: warm gray, vivid red-coral accent. Editorial, legal, finance with a human tone.
+- `amber`: neutral charcoal, bright gold accent. Ops consoles, trading, long night sessions.
+- `iris`: violet-gray, saturated violet accent, emerald focus. Creative tools and AI products.
+- `mono`: neutral chrome with the same bright categorical colors. White-label, or a
+  product whose logo or photography carries the accent.
 
 How to choose:
 
 1. The product already has a brand color: generate with `--rule` at that hue and a
-   chroma of 0.04–0.08. A brand color at full chroma is too loud for a hairline UI;
-   keep it for the logo.
-2. No brand: pick by audience from the list above. When in doubt, `bronze` or `mono`.
+   chroma of 0.16–0.24. Preserve the hue and let the generator reduce chroma only
+   where sRGB requires it. Bright chart marks work against neutral page chrome.
+2. No brand: pick by audience from the list above. For a general data tool, start with `graphite`; use `mono` for neutral chrome.
 3. The page is mostly charts with many categories: `mono` or `graphite`, so the data
-   colors are the only color on the page.
+   colors remain distinct from the page chrome.
 4. Keep the neutral's hue near the rule's hue (within ~40°) with low chroma
    (0.004–0.012). A neutral with no relation to the rule looks unfinished.
 5. Put the focus hue 120° or more from the rule.
@@ -62,13 +64,13 @@ How to choose:
 node scripts/palette.mjs --list                    # presets and their use
 node scripts/palette.mjs --preset moss             # one preset's CSS
 node scripts/palette.mjs --all > assets/palettes.css
-node scripts/palette.mjs --name brand --neutral 250:0.008 --rule 255:0.07 --focus 160
-node scripts/palette.mjs --name brand --neutral 30:0.01 --rule 30:0.06 --focus 250 --pure-black false
+node scripts/palette.mjs --name brand --neutral 250:0.008 --rule 250:0.20 --focus 35
+node scripts/palette.mjs --name brand --neutral 30:0.01 --rule 30:0.20 --focus 250 --pure-black false
 ```
 
 `--neutral H:C` and `--rule H:C` are OKLCH hue in degrees and chroma. `--focus H` is a
-hue. The script fixes lightness per role, maps to sRGB inside the gamut, checks every
-pair against its floor, prints the ratios as a comment, and exits 1 when one fails.
+hue. The script fixes lightness per role, maps to sRGB inside the gamut, checks foregrounds, categorical marks, and treemap hover labels
+against their contrast floors, prints the ratios as a comment, and exits 1 when one fails.
 Paste the output into the app's palette file and set `data-palette="brand"`, or
 replace the default block.
 
@@ -85,4 +87,8 @@ the page "quieter"; lower the number of things on the page instead.
   a direct label.
 - Sequential (heatmap, intensity): one hue, mixed from `bg` to `chart-bar` in four
   steps, `chart-line` at the top. Hollow squares for days with no data yet.
-- Treemap tiles mix the data color with black at 34% (46% on hover) and carry white text.
+- Treemap tiles retain 55% of the data color (65% on hover) over black. This keeps
+  the fills vivid while white labels retain at least 4.5:1 contrast in both themes.
+- Data colors use higher chroma than the neutral chrome. Avoid an all-pastel
+  categorical palette; keep orange, violet, blue, emerald, amber, pink, cyan, and
+  leaf green visibly distinct.

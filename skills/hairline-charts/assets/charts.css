@@ -18,13 +18,13 @@
 .hl-legend-item[aria-pressed="true"] { color: var(--hl-ink); text-decoration: underline; text-decoration-color: var(--hl-rule); text-underline-offset: 4px; }
 
 /* Period bars with a running total. Bars are data, so they clear 3:1 against the page. */
-.hl-combo-bar { fill: color-mix(in srgb, var(--hl-chart-bar) 62%, var(--hl-bg)); transition: fill 100ms ease-out; }
+.hl-combo-bar { fill: color-mix(in srgb, var(--hl-chart-bar) 85%, var(--hl-bg)); transition: fill 100ms ease-out; }
 .hl-combo-bar.is-hot { fill: var(--hl-chart-bar); }
 .hl-combo-dot.is-hot { fill: var(--hl-chart-line); }
 .hl-hit { fill: transparent; }
 .hl-key { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px; color: var(--hl-faint); font-size: 12px; }
 .hl-key span { display: inline-flex; align-items: center; gap: 6px; }
-.hl-key i { display: block; width: 8px; height: 8px; background: color-mix(in srgb, var(--hl-chart-bar) 62%, var(--hl-bg)); }
+.hl-key i { display: block; width: 8px; height: 8px; background: color-mix(in srgb, var(--hl-chart-bar) 85%, var(--hl-bg)); }
 .hl-key i.is-line { height: 1.5px; background: var(--hl-chart-line); }
 
 /* A line that draws itself in once. Needs pathLength="1" on the element. */
@@ -32,7 +32,7 @@
 @keyframes hl-draw { to { stroke-dashoffset: 0; } }
 
 /* Scatter. Translucent fill, solid edge, so overlaps stay readable. */
-.hl-scatter-dot { fill-opacity: .55; stroke-width: 1; transition: fill-opacity 100ms ease-out, opacity 100ms ease-out; }
+.hl-scatter-dot { fill-opacity: .75; stroke-width: 1; transition: fill-opacity 100ms ease-out, opacity 100ms ease-out; }
 .hl-scatter-dot.is-hot { fill-opacity: .9; }
 .hl-chart .hl-scatter-label { fill: var(--hl-ink); font-size: 12px; pointer-events: none; }
 

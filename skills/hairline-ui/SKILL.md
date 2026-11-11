@@ -7,8 +7,8 @@ description: "Build or restyle web UIs in the flat hairline style: dark-first da
 
 A flat, type-led interface style for data-heavy web apps: dashboards, usage desks,
 admin consoles, internal tools. Type sits on the page, 1px hairlines separate things,
-controls are words with an underline. Color comes from one quiet signature hue and a
-categorical data palette. Dark first, with a matching light theme.
+controls are words with an underline. Color comes from one saturated signature hue and a
+bright categorical data palette. Dark first, with a matching light theme.
 
 Keep the user's product, words, framework, and data. This skill sets the look and the
 interaction rules, not the content. For the matching build stack (Svelte 5 + Vite +
@@ -57,15 +57,17 @@ Recommend a preset from `references/palettes.md` that fits the product, and say 
 one line. Presets: `bronze` (default, warm, premium), `graphite` (engineering),
 `moss` (calm, health), `oxblood` (editorial, legal), `amber` (ops, night),
 `iris` (creative, AI), `mono` (white-label). With a brand color, generate one:
-`node scripts/palette.mjs --name brand --neutral H:0.008 --rule H:0.06 --focus H2`.
-Keep the rule low-chroma; full brand saturation belongs to the logo.
+`node scripts/palette.mjs --name brand --neutral H:0.008 --rule H:0.20 --focus H2`.
+Keep the page chrome neutral; use bright, saturated accents for selected controls
+and chart marks. Recommend a hue for the product instead of defaulting to bronze.
 
 - `rule` appears as thin strokes and chart bars only. Never a large fill.
 - `focus` is far from the rule in hue, so focus never reads as selection.
 - `up`/`down` always ride with an arrow and a sign. Up is not automatically bad.
 - One series uses `chart-line`/`chart-bar`; categories use `data-1..8` in order, same
   category same color on every chart.
-- Floors: ink 12:1, muted and faint 4.5:1 on bg and surface, rule/focus/up/down 3:1.
+- Floors: ink 12:1; muted, faint, and direction text 4.5:1; accents and categorical
+  marks 3:1 on bg and surface; white treemap labels 4.5:1 through hover.
   The generator checks them; rerun after any hand edit.
 
 ## Typography
@@ -136,7 +138,7 @@ Things the viewer cannot use are hidden, not disabled.
 - Icon-only controls without a label. Icons are 24-grid, 1.8 stroke, round caps, and
   usually sit beside a word.
 - A chart library's default look, legends with squares, 3D, pies with many slices.
-- A brand color at full chroma on lines and bars.
+- Muting every accent and data series into gray or pastel. Large colored page backgrounds.
 - Spinners. Skeletons shaped like fake content. Animation on every repaint.
 - More than one primary button in view.
 
