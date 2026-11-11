@@ -1,0 +1,33 @@
+{
+  "skill_name": "interface-polish",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this existing inventory app and propose a focused fix with verification steps. Do not edit files or run a browser. Preserve its IBM Plex Sans font, Heroicons, violet brand, and Vue stack. The viewport is 1440px, but opening the inspector leaves a 470px content pane. The toolbar overflows: .toolbar { display:flex } .title { white-space:nowrap } .save { white-space:nowrap }. Its only compact rule is @media(max-width:600px){ .context {display:none} }. A narrow mode also uses .privacy-label {display:none} on a button whose SVG is aria-hidden and whose text is its only accessible name. Each list row has a separately actionable disclosure button that appears only on hover. A 16px icon button sits inside an overflow:hidden list with an outward focus outline. Inventory counts change from 99 to 100 and the adjoining labels jump. A filtered empty list only says 'Nothing here'. Give the important fixes and the evidence needed to call them verified.",
+      "expected_output": "A scoped review preserving the app's design choices; pane-based adaptation, shrinkable labels and a stable Save action; accessible compact labels and reachable disclosure; effective targets and visible focus; stable counts; useful filtered-empty recovery. Verification distinguishes a wide window's narrow pane from a phone and includes keyboard and touch-style checks without claiming they were run.",
+      "files": [],
+      "assertions": [
+        "Preserves the named font, icon set, palette, and framework.",
+        "Uses available pane width rather than only a viewport breakpoint, and keeps Save reachable.",
+        "Preserves the privacy button's accessible name and the independent disclosure action on touch.",
+        "Addresses focus clipping and target overlap or clipping, rather than only increasing glyph size.",
+        "Addresses count stability and filtered-empty recovery.",
+        "Proposes rendered keyboard and narrow-pane checks without claiming they were performed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Please review this existing settings menu polish patch, with a minimal fix plan and verification steps only. Do not edit files or run a browser. The app already uses a good dialog primitive. .menu {transition:opacity 150ms ease-out, transform 150ms ease-out; scale:1}. .menu[data-starting], .menu[data-ending] {opacity:0; scale:.95}. The patch renames ease-out to var(--ease-out), but DevTools shows the same winning cubic-bezier before and after. close() immediately unmounts the menu. A press during the entrance restarts from scale .95. @media(prefers-reduced-motion:reduce){.menu{transition:none}} exists, but cleanup waits only for transitionend. The PR claims 'smoother motion and unchanged corners' with resting screenshots and CSS string tests. It replaces a raw 6px radius with --radius-sm; a second merged patch changed that token to 4px. The user wants snappier dismissal and reliable keyboard use, without a new animation dependency. What matters here?",
+      "expected_output": "Identifies individual scale versus transform, the easing rename's lack of computed effect, exit unmounting and interruption problems, reduced-motion cleanup, focus lifecycle, and the integrated radius change. Reuses the existing primitive, proposes faster dismissal and behavioral checks, and treats resting screenshots and string tests as insufficient evidence of motion.",
+      "files": [],
+      "assertions": [
+        "Distinguishes the individual scale property from transform and proposes transitioning the property that changes.",
+        "Recognizes that the easing rename has no demonstrated visual effect.",
+        "Addresses exit mounting and reversal from current state using the existing primitive without a new dependency.",
+        "Addresses cleanup when reduced motion suppresses transitionend and keyboard focus restoration.",
+        "Recognizes that 6px to a now-4px token changes the corners after integration.",
+        "Requires time-based or intermediate-state motion evidence beyond resting screenshots and string tests, without claiming it was collected."
+      ]
+    }
+  ]
+}

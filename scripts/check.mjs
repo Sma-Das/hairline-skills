@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const skills = ["hairline-ui", "hairline-stack", "hairline-charts", "hairline-motion"];
+const skills = ["hairline-ui", "hairline-stack", "hairline-charts", "hairline-motion", "interface-polish"];
 for (const name of skills) {
   const folder = resolve(root, "skills", name);
   const text = readFileSync(resolve(folder, "SKILL.md"), "utf8");
@@ -33,4 +33,4 @@ function checkLinks(folder) {
   }
 }
 checkLinks(root);
-console.log("All four skill packages, local Markdown links, and shared motion helpers pass.");
+console.log(`All ${skills.length} skill packages, local Markdown links, and shared motion helpers pass.`);

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interface Polish"
+  short_description: "Refine existing UI hierarchy, controls, layout, and motion"
+  default_prompt: "Use $interface-polish to inspect this app and implement a focused UI and UX polish pass that preserves its design language."

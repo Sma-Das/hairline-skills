@@ -1,6 +1,6 @@
 # Hairline skills
 
-Project-agnostic agent skills for flat, type-led interfaces, a small Go + Svelte stack, hand-built SVG charts, and restrained motion. Keep your own product, data, framework, and brand colors.
+Project-agnostic agent skills for flat, type-led interfaces, a small Go + Svelte stack, hand-built SVG charts, restrained motion, and polishing existing apps. Keep your own product, data, framework, and brand colors.
 
 [![skills.sh](https://skills.sh/b/Sma-Das/hairline-skills)](https://skills.sh/Sma-Das/hairline-skills)
 
@@ -10,7 +10,7 @@ Project-agnostic agent skills for flat, type-led interfaces, a small Go + Svelte
 npx skills add Sma-Das/hairline-skills
 ```
 
-Choose the skills and coding agents when prompted. To select all four skills:
+Choose the skills and coding agents when prompted. To select all skills:
 
 ```sh
 npx skills add Sma-Das/hairline-skills --skill '*'
@@ -22,6 +22,7 @@ npx skills add Sma-Das/hairline-skills --skill '*'
 | [hairline-stack](skills/hairline-stack/SKILL.md) | Go API with embedded Svelte 5 + Vite UI, dashboard or analysis workspace, sample data, tests, Dockerfile, and CI scaffold | Install hairline-ui alongside it |
 | [hairline-charts](skills/hairline-charts/SKILL.md) | SVG share and signed comparison charts, linked rankings, trends, scatter, treemap, and calendar heatmap | Install hairline-ui alongside it |
 | [hairline-motion](skills/hairline-motion/SKILL.md) | Motion decisions, curves, springs, interruption handling, FLIP, and reduced motion | Independent |
+| [interface-polish](skills/interface-polish/SKILL.md) | Improve existing UI hierarchy, icon and control geometry, pane responsiveness, interaction states, and motion while preserving the product's design language | Independent |
 
 The agent instructions focus on design intent, decisions, and implementation quality. Detailed recipes and reusable code are supporting resources, rather than file catalogs in the skill entry points.
 
@@ -35,6 +36,7 @@ The skills work with agents that support the [Agent Skills format](https://agent
 - “Use hairline-stack to scaffold a Go and Svelte app for project planning.”
 - “Use hairline-charts to show monthly totals and a running total.”
 - “Use hairline-motion to make this drawer interruptible and respect reduced motion.”
+- “Use interface-polish to improve this app's typography, controls, and narrow-pane behavior without changing its visual identity.”
 
 Bright, saturated color recommendations cover copper-orange, sky blue, leaf green, red-coral, gold, violet, and monochrome chrome with vivid categorical colors. Dark and light themes share semantic tokens; a generator creates custom palettes and checks contrast. The style does not require black and bronze.
 
