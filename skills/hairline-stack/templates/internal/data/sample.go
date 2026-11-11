@@ -25,7 +25,15 @@ func (s *Sample) Summary(_ context.Context, days int) (Summary, error) {
 	rng := rand.New(rand.NewSource(s.Seed))
 	to := s.Now().UTC()
 	from := to.AddDate(0, 0, -(days - 1))
-	out := Summary{From: from.Format(time.DateOnly), To: to.Format(time.DateOnly), GeneratedAt: to.Format(time.RFC3339)}
+	out := Summary{From: from.Format(time.DateOnly), To: to.Format(time.DateOnly), GeneratedAt: to.Format(time.RFC3339), SourceLabel: "Generated sample data", UpdatedAt: to.Format(time.RFC3339)}
+	for i, team := range sampleTeams {
+		family := "coral"
+		if i >= 2 {
+			family = "silver"
+		}
+		tone := i % 2
+		out.Series = append(out.Series, Series{Key: lower(team), Label: team, Family: family, Tone: &tone, Values: make([]int64, 0, days)})
+	}
 
 	weights := make([]float64, len(sampleFirst))
 	var weightSum float64
@@ -49,6 +57,22 @@ func (s *Sample) Summary(_ context.Context, days int) (Summary, error) {
 		out.Days = append(out.Days, Day{Day: day.Format(time.DateOnly), Cents: cents, Requests: requests})
 		out.TotalCents += cents
 		out.Requests += requests
+		// Invented team trends share the exact daily total, including integer remainders.
+		teamWeights := make([]float64, len(out.Series))
+		var teamTotal float64
+		for i := range teamWeights {
+			teamWeights[i] = 1.2 + math.Sin(float64(d)/6+float64(i)*1.7)
+			teamTotal += teamWeights[i]
+		}
+		remaining := cents
+		for i := range out.Series {
+			amount := remaining
+			if i < len(out.Series)-1 {
+				amount = int64(float64(cents) * teamWeights[i] / teamTotal)
+			}
+			out.Series[i].Values = append(out.Series[i].Values, amount)
+			remaining -= amount
+		}
 		for i := range people {
 			share := weights[i] / weightSum
 			people[i].Cents += int64(float64(cents) * share)

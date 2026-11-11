@@ -1,5 +1,13 @@
 # Motion patterns
 
+## Linked analytical inspection
+
+Date hover, arrow-key inspection, and pinned values update immediately. A brief 100ms opacity change can connect a band with its ranked row, but the ranking must not reorder during inspection. Keyboard focus skips even that emphasis transition. A pinned date and a pinned series are separate states; Escape clears both.
+
+Keep the main view mounted when opening the mobile filter dialog. Move the same filter content into a native modal so focus, Escape, and background inertness use browser behavior. Closing or expanding back to desktop restores the content and an appropriate focus target. Use a short drawer transition only if it explains the spatial relationship; reduced motion and rapid dismissal must reach the same state.
+
+During a new-window request, retain the last good chart and dim it only after a slow-request delay. Disable exports until the displayed data matches the selected scope. Theme and family-color changes update all marks together without crossfading through intermediate colors.
+
 Each pattern: what it is for, its numbers, and how it behaves when interrupted.
 Helpers are in `assets/js/motion.js` and `assets/js/patterns.js`. The classes are in
 `assets/motion.css`.

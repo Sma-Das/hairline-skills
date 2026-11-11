@@ -1,5 +1,23 @@
 # Architecture
 
+## Starting a project
+
+Run the bundled `scripts/scaffold.sh <directory> <go-module> [title]` for the ordinary dashboard. Use `scripts/scaffold.sh --layout analysis <directory> <go-module> [title]` for the analytical workspace. Both refuse a non-empty target. Node 22 is required for the generator and interface build.
+
+Install the UI skill beside the stack skill, or set `HAIRLINE_UI`. The analysis layout also needs the charts skill beside it, or `HAIRLINE_CHARTS`. The generator copies the required styles, font, helpers, and chart modules; the generated application has no runtime dependency on the skills' installation paths.
+
+Install the generated interface dependencies once, run its tests and production build, then run Go vet and tests from the application root. The Go embed requires the interface build first. Commit the generated npm lockfile and use `npm ci` thereafter.
+
+## Analytical layout
+
+The analysis variant reads the same bounded summary endpoint as the dashboard. The optional `series` payload contains `{ key, label, family, values, tone? }` with integer cents aligned to `days`. The generated store allocates every day's cost exactly across its invented team series. A real store must supply real series or leave them unavailable; never infer daily distributions from period totals.
+
+Optional `source_label` and `updated_at` describe the underlying observations. `generated_at` describes the response and must not be substituted for source freshness. The empty store supplies no invented provenance.
+
+The workspace includes normalized cost share, a fixed first-two-team comparison, a linked ranking, date and series pinning, a responsive filter dialog, browser-local appearance and color mode, public URL state, and SVG/PNG exports. `analysis-app.js` owns behavior and returns cleanup from `onMount`. The data calculations, family colors, and URL parser remain independently testable modules.
+
+The content policy permits blob images and data fonts for self-contained chart exports. It still restricts resources to the application's own origin by default and denies framing. Keep these capabilities explicit if a deployment tightens its policy further.
+
 ## Shape
 
 ```

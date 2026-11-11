@@ -1,103 +1,38 @@
 ---
 name: hairline-charts
-description: "Build hand-drawn SVG charts for dashboards: line, stacked, bars + running total, scatter, treemap, calendar heatmap."
+description: "Build clear SVG data visualizations and linked analytical readouts, including share charts, comparisons, trends, rankings, treemaps, and calendars."
 ---
 
-# Hairline charts
+# Hairline Charts
 
-Data charts drawn by hand in SVG and plain DOM, with no chart library. Built for
-usage and spend dashboards, admin desks, and internal tools, where a few chart types
-done carefully beat a library's fifty. Each chart is one ES module that takes a
-host element and returns `update()` plus a few setters.
+Turn a quantitative question into a chart people can read, inspect, and explain. Build purpose-specific SVG rather than accepting the visual defaults of a chart kit. Preserve the product's labels, units, colors, and framework; the chart should feel like part of the interface.
 
-The look comes from `hairline-ui` (tokens, `.hl-chart` classes, tooltip, motion
-helpers). This skill adds the chart modules, their CSS, and the rules behind them.
-For motion in general, see `hairline-motion`.
+## Choose the comparison before the shape
 
-## Files
+Decide whether the person is comparing change over time, parts of a total, a position against a limit, two opposing outcomes, or many ranked items. That decision determines the representation.
 
-- `assets/js/line.js`: `createLineChart`. One series over time, running total (line)
-  or per step (bars), with an optional limit line and projection.
-- `assets/js/stacked.js`: `createStackedChart`. Several series stacked over time, with
-  a legend that isolates one series.
-- `assets/js/combo.js`: `createComboChart`. Bars per period plus a running-total line.
-- `assets/js/scatter.js`: `createScatter`. Log-log bubbles, labeled where a label fits.
-- `assets/js/treemap.js` + `layout.js`: `createTreemap` over a stable split-tree
-  layout, so the walls slide when values change. `layout.js` is pure:
-  `node --test assets/js/layout.test.mjs`.
-- `assets/js/heatmap.js`: `paintHeatmap`. A calendar of days in four steps.
-- `assets/js/axes.js`: shared padding, y grid, x labels, and pointer helpers.
-- `assets/charts.css`: chart classes beyond `hairline.css`. Load after it.
-- `assets/specimen.html`: every chart on generated data. It needs `hairline-ui` beside
-  this skill and an HTTP server (ES modules do not load from `file://`):
-  `python3 -m http.server 8123` from the skills folder, then
-  `/hairline-charts/assets/specimen.html?palette=moss&theme=light`.
-- `assets/specimen-dark.png`, `specimen-light.png`: what it should look like.
-- `references/anatomy.md`: each chart's parts, numbers, data shape, and options.
-  Read it before you build or change a chart.
-- `references/treemap.md`: the stable layout, the glide, and tile fitting.
+Use a line for a trend, stacked bands for composition, and a normalized 100% stack when share matters more than volume. Pair a share chart with a ranking that gives exact values. Use a signed comparison around zero when the question is which of two groups leads; make both directions explicit. Use bars with a running total for accumulation, a treemap for many parts of one whole, a calendar for daily activity, and a scatter plot when two measures span a wide range. A short ranking often needs only labels and share bars.
 
-Install: copy `hairline-ui/assets/js/{charts,motion,tooltip}.js` and this skill's
-`assets/js/*.js` into one folder (the modules import `./charts.js`, `./motion.js`,
-and `./tooltip.js`), then load `palettes.css`, `hairline.css`, and `charts.css`.
+## Keep the quantities honest
 
-## Choose the chart
+Use one understandable scale for comparable measures. Show a limit even when it raises the axis beyond the observations. Label logarithmic scales. Keep integer units on integer ticks, and distinguish projections from observations.
 
-- A value over time against a limit or a target: **line**, running mode. Per-step
-  detail: the same chart in daily mode, so the toggle keeps the scale and the place.
-- Parts of a total over time: **stacked**. Five to eight series at most; fold the rest
-  into "Other", which lists its members in its title and tooltip.
-- Totals per period (months, quarters) and the total so far: **combo**.
-- Two measures that each span orders of magnitude (volume and price): **scatter** on
-  log axes. A third measure becomes bubble area.
-- Shares of one total with many items: **treemap**. Not a pie, and not a donut.
-- Activity per day across a year: **calendar heatmap**.
-- One figure with its trend beside it: `sparkline` from `hairline-ui`.
-- A ranked list: a table with an in-cell bar (`hl-cell-bar` in `hairline-ui`), not a
-  bar chart.
+For share charts, normalize over the explicitly selected cohort. Name the denominator. State whether a period figure is a volume-weighted share or an average of daily shares; those answer different questions. A percentage-point change is the difference between two percentages, not a percentage growth rate.
 
-## Rules
+Missing observations and all-zero totals are gaps. Do not turn them into 0% observations or connect a trend across them. Future days remain visibly different from recorded zeroes. A comparison against a completed period must account for a period still in progress.
 
-- **One y scale.** A limit, a projection, and a running line share the bars' scale.
-  There is never a second axis. A limit above the data raises the axis, so it is
-  always on the chart.
-- **Axes.** Ticks are 1, 2, or 5 times a power of ten (`niceTicks`), three or four of
-  them, and the top tick is the axis top. Integer data gets integer ticks. Gridlines
-  are dotted (`1 4`), the baseline is solid, and axis text is faint 11.5px tabular.
-  X labels go about one per 96px, always the first and the last, with the ends
-  anchored inward. A log axis says "log scale" in its title.
-- **Color.** One series is chart-line or chart-bar ink. Categories use `--hl-data-1..8`,
-  and a category keeps its color on every chart on the page. Identity never rests
-  on color alone: the legend, the tooltip, labels, and the accessible name all
-  carry the name.
-- **Hover enhances and never gates.** Every value in a tooltip is also in a table,
-  a label, or the accessible name. Hover dims the other marks to 30%
-  (`.has-hot` / `.is-hot`). Line charts get a crosshair and a dot. The pointer only
-  has to be near: a column for bars, the nearest index for lines, within 28px of the
-  edge for bubbles. `pointerdown` shows the same tooltip for touch.
-- **Paint on width.** `watchWidth` paints at the measured width and repaints when it
-  changes. A hidden chart measures 0 and waits, so a chart in a closed section paints
-  when it opens. The viewBox is the measured width, so text never scales.
-- **Empty is said.** A chart with nothing to draw says so in one faint line inside
-  its frame. An empty frame reads as broken.
-- **Future is hollow.** Days not stored yet are outlines, not zero-value squares.
-  A period still running says "so far" and gets no change against a whole one.
-- **Motion.** Marks are keyed and ease from what is on screen to the new values
-  (280ms). A new window length rises from the baseline (360ms). The first paint may
-  grow once; later repaints never replay it. Reduced motion jumps to the end.
-  Keyboard actions and resizes are instant. Theme changes snap.
-- **Accessibility.** The SVG has `role="img"` and an `aria-label` that states the
-  range and the headline. A treemap tile is a button whose label has its name,
-  figure, and share. Tab order follows value. Focus survives a repaint.
-- **Text is text.** Series names go in through `textContent`, never `innerHTML`.
+## Connect the chart to its readout
 
-## Building a new chart
+Keep exact values available in labels, a ranking, or a keyboard-operable inspection state. Hover may help reading; it must never be the only way to obtain a value. Arrow keys should inspect dates, touch should be able to pin a selection, and Escape should return to the period view.
 
-Follow the shape of the existing modules: create the SVG groups once, then
-`render(width, animate)` rebuilds the grid and sets attributes on keyed marks, and a
-`frame(values, max, width)` function draws one moment so a tween can call it. Keep
-`state.shown` (what is on screen) apart from the target, so a new update eases from
-where the marks are. Return `update`, the setters, and `destroy`.
+Link the chart and ranking in both directions. Inspecting a band emphasizes the matching row; focusing a row emphasizes its marks. Preserve stable row positions during date inspection so the target does not move under the pointer. Keep labels and focus attached to stable identities across updates. Distinguish a transient hover from a pinned selection.
 
-Check every change in the specimen, dark and light, at 1280px and 390px wide.
-Hover each chart, toggle each mode, and shuffle the treemap mid-move.
+Choose color for the relationship: distinct hues for unrelated categories, related tones for members of one family. Keep an item's color stable across filters and views. Use names and redundant cues alongside color, and verify contrast against both the page and any fill behind text.
+
+## Make changes easy to follow
+
+Repaint at the measured width and wait while hidden. Resizing and keyboard inspection should be immediate. Animate a meaningful data change from the values currently on screen, with interruption handled smoothly; do not replay an entrance whenever a chart repaints. Never overshoot a value. Preserve the treemap's spatial structure when weights change unless it becomes unreadable.
+
+An export should contain the displayed theme, font, selected scope, exact readout, and relevant data notes. Resolve styles and dimensions so the saved SVG or PNG remains readable outside the application.
+
+For data shapes and implementation details, consult the [chart guidance](references/anatomy.md); for share, comparison, and linked inspection behavior, use the [analysis guidance](references/analysis.md). Verify empty and partial data as carefully as the normal case, and inspect the working chart with pointer, keyboard, and touch-sized layouts.

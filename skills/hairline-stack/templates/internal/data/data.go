@@ -23,6 +23,15 @@ type Person struct {
 }
 
 // Summary is one window and the equal window before it.
+// Series values align with Summary.Days and use the same integer cents.
+type Series struct {
+	Key    string  `json:"key"`
+	Label  string  `json:"label"`
+	Family string  `json:"family"`
+	Tone   *int    `json:"tone,omitempty"`
+	Values []int64 `json:"values"`
+}
+
 type Summary struct {
 	From          string   `json:"from"`
 	To            string   `json:"to"`
@@ -32,6 +41,9 @@ type Summary struct {
 	Requests      int64    `json:"requests"`
 	People        []Person `json:"people"`
 	GeneratedAt   string   `json:"generated_at"`
+	Series        []Series `json:"series,omitempty"`
+	SourceLabel   string   `json:"source_label,omitempty"`
+	UpdatedAt     string   `json:"updated_at,omitempty"`
 }
 
 type Store interface {

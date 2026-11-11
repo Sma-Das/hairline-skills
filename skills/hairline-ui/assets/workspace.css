@@ -1,0 +1,60 @@
+/* Optional analysis layout. Load after hairline.css; the dashboard layout is unchanged. */
+.hl-root .hl-display-title { font-size: 24px; font-weight: 700; letter-spacing: -.5px; line-height: 1.25; }
+.hl-analysis-app { block-size: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.hl-workspace { display: grid; grid-template-columns: minmax(0, 1fr) var(--hl-rail-width, 248px); min-block-size: 0; }
+.hl-workbench-main { min-inline-size: 0; overflow: auto; padding: 22px var(--hl-gutter) 28px; }
+.hl-workbench-rail { min-block-size: 0; overflow: auto; padding: 20px 18px; border-inline-start: 1px solid var(--hl-line); }
+.hl-workbench-head, .hl-analysis-controls, .hl-analysis-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
+.hl-workbench-head { justify-content: space-between; margin-block-end: 14px; }
+.hl-analysis-controls { margin-block-end: 18px; }
+.hl-analysis-actions { gap: 16px; }
+.hl-analysis-actions .hl-button { font-size: 12.5px; }
+.hl-analysis-controls .hl-label { flex-direction: row; align-items: center; gap: 8px; }
+.hl-analysis-controls select { inline-size: auto; }
+.hl-analysis-tabs { display: flex; flex-wrap: wrap; gap: 18px; }
+.hl-analysis-tabs [aria-pressed="true"] { color: var(--hl-ink); text-decoration: underline; text-decoration-color: var(--hl-rule); text-underline-offset: 8px; }
+.hl-chart-ranking { display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 30%); gap: 24px; align-items: start; }
+.hl-analysis-figure { min-inline-size: 0; }
+.hl-analysis-readout { min-block-size: 26px; color: var(--hl-muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.hl-ranking-heading { display: flex; justify-content: space-between; gap: 12px; color: var(--hl-faint); font-size: 12px; }
+.hl-rank-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 8px; inline-size: 100%; min-block-size: 50px; padding: 8px 0; border: 0; border-block-start: 1px solid var(--hl-line); background: transparent; text-align: start; cursor: pointer; font-size: 13px; }
+.hl-rank-place { color: var(--hl-faint); font-size: 12px; }
+.hl-rank-name { overflow-wrap: anywhere; }
+.hl-rank-numbers { text-align: end; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hl-rank-delta { display: block; color: var(--hl-faint); font-size: 11.5px; }
+.hl-rank-bar { display: block; block-size: 2px; margin-block-start: 5px; background: var(--c); transform: scaleX(var(--share, 0)); transform-origin: left; }
+.hl-rank-row[aria-pressed="true"] .hl-rank-name { text-decoration: underline; text-underline-offset: 3px; }
+.hl-rank-row.is-hot { color: var(--hl-ink); }
+.hl-comparison { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-block: 18px; font-variant-numeric: tabular-nums; }
+.hl-comparison > :nth-child(2) { text-align: center; }
+.hl-comparison > :last-child { text-align: end; }
+.hl-comparison strong { display: block; color: var(--c, var(--hl-ink)); font-size: 38px; font-weight: 500; letter-spacing: -1px; line-height: 1.3; }
+.hl-comparison small { color: var(--hl-faint); font-size: 12px; }
+.hl-data-notes { display: flex; flex-wrap: wrap; gap: 5px 18px; margin-block-start: 18px; padding-block-start: 12px; border-block-start: 1px solid var(--hl-line); color: var(--hl-faint); font-size: 12px; }
+.hl-data-notes p, .hl-data-notes details { flex-basis: 100%; margin: 0; }
+.hl-data-notes summary { cursor: pointer; color: var(--hl-muted); }
+.hl-data-notes details p { margin-block-start: 8px; max-inline-size: 80ch; }
+.hl-filter-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block-end: 12px; }
+.hl-filter-options { display: grid; gap: 4px; margin-block: 14px 20px; }
+.hl-filter-option { display: flex; align-items: center; gap: 9px; min-block-size: 36px; color: var(--hl-muted); font-size: 13px; cursor: pointer; }
+.hl-filter-option input { accent-color: var(--hl-rule); }
+.hl-filter-option:has(:checked) { color: var(--hl-ink); }
+.hl-filter-option i { inline-size: 8px; block-size: 8px; flex: none; background: var(--c); }
+.hl-mobile-filters { display: none; }
+.hl-filter-dialog { position: fixed; inset: 0; inline-size: 100%; block-size: 100dvh; max-inline-size: none; max-block-size: none; margin: 0; padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom)); border: 0; background: var(--hl-bg); color: var(--hl-ink); overflow: auto; overscroll-behavior: contain; }
+.hl-share-link { inline-size: 100%; margin-block: 8px; }
+@media (max-width: 960px) {
+  .hl-analysis-app { display: block; block-size: auto; min-block-size: 100dvh; }
+  .hl-workspace { display: block; }
+  .hl-workbench-main { overflow: visible; }
+  .hl-workbench-rail { display: none; }
+  .hl-mobile-filters { display: inline-flex; }
+}
+@media (max-width: 700px) {
+  .hl-chart-ranking { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .hl-comparison strong { font-size: 28px; }
+  .hl-comparison small { font-size: 11.5px; }
+  .hl-workbench-head { align-items: start; }
+  .hl-filter-option { min-block-size: 44px; }
+  .hl-analysis-actions .hl-button, .hl-analysis-tabs .hl-button { min-block-size: 40px; }
+}
