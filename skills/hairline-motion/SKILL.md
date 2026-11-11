@@ -1,90 +1,38 @@
 ---
 name: hairline-motion
-description: "Add restrained UI motion to dashboards and tools: curves, durations, FLIP, springs, view transitions, reduced motion."
+description: "Design and implement restrained, interruptible motion for working interfaces, with immediate reading interactions and complete reduced-motion behavior."
 ---
 
-# Hairline motion
+# Hairline Motion
 
-Motion for working interfaces: dashboards, admin tools, and data desks, where people
-come back every day and click quickly. Motion here explains a change of place or
-state. It is never decoration, and it never makes someone wait.
+Make a change easier to understand without making the person wait for it. In dashboards and analytical tools, motion should explain what arrived, moved, expanded, or disappeared. Preserve the interface's character and use the platform or animation system already present when it can do the job.
 
-It works with any design. `hairline-ui` components already follow these rules, and
-`hairline-charts` uses the same helpers.
+## Decide whether the change needs motion
 
-## Files
+Begin with frequency and purpose. A drawer opening occasionally benefits from a spatial transition. A value inspected dozens of times a minute usually benefits from an immediate response. Typing, keyboard navigation, date inspection, resizing, and appearance changes should not queue animations behind the person's actions.
 
-- `assets/js/motion.js`: curves (`EASE_OUT`, `MOVE`, `DRAWER`), the spring (`springEasing`,
-  `springCurve`, `springAt`, `GLIDE`, `GLIDE_CARRY`), `reduced`,
-  `lastInputWasKeyboard`, `tween`, `lerp`, `countTo`, `flip`, `enter`, `viewTransition`,
-  and `setTheme`. This is the same file as `hairline-ui/assets/js/motion.js`. Keep the
-  two identical.
-- `assets/js/patterns.js`: `toggleFold`, `slideMarker`, `slowFlag`, `reorder`,
-  `glideTo` (spring with retarget), `settle` (after a drop), and `fillInOnce`.
-- `assets/motion.css`: tokens, `.hl-fold`, `.hl-marker`, `dialog.hl-sheet`, `.hl-pop`,
-  `.hl-press`, `.hl-refreshable`, `.hl-wait`, `.hl-draw-in`, `.hl-fill-in`, hover inside
-  the hover media query, view-transition rules, and the reduced-motion block.
-- `assets/demo.html`: every pattern on one page. Serve it over HTTP.
-- `references/patterns.md`: each pattern with its numbers and how it behaves when
-  interrupted. Read it before you add motion.
-- `references/spring.md`: the spring math and when to use it.
+Do not animate a repaint merely because code ran. Avoid ornamental entrances on every row or section. If the motion does not clarify a state change, remove it.
 
-## Decide in this order
+## Give each movement a consistent character
 
-1. **Should it move at all?** Animate a change that would otherwise be lost: something
-   arrived, left, or moved, or a state flipped. Do not animate keyboard actions,
-   things that happen hundreds of times a day (typing, row hover, tab switches within
-   a pane), or a repaint with no change. When unsure, leave it out.
-2. **What is it for?** Each kind of change has one curve:
-   - Arrives, or answers a press: `EASE_OUT` `cubic-bezier(0.23, 1, 0.32, 1)`,
-     120 to 280ms.
-   - Already on screen and changes place: `MOVE` `cubic-bezier(0.77, 0, 0.175, 1)`,
-     240 to 280ms.
-   - Sheets and drawers: `DRAWER` `cubic-bezier(0.32, 0.72, 0, 1)`, 280ms.
-   - A layout box that changes size with text inside:
-     `cubic-bezier(0.2, 0, 0, 1)`, 440ms.
-   - Likely to be retargeted mid-move: the spring, `GLIDE`, then `GLIDE_CARRY`.
-   - Color and opacity on hover: 100 to 120ms `ease-out`.
-3. **Which properties?** `transform` and `opacity`. Collapse goes through
-   `grid-template-rows`. A marker is a 1px element scaled with `scaleX`. Animate
-   `left/top/width/height` only for a few dozen boxes whose text must not stretch,
-   and read every box before writing any style.
-4. **How long?** UI motion stays under 300ms. The exceptions: a counting figure (320ms),
-   a resizing layout (440ms), a line drawing in (480ms), and the loading pulse (a
-   1400ms loop). Exits are faster than entrances.
-5. **What happens when it is interrupted?** Every move starts from where the element
-   is on screen, never from its old layout box. CSS transitions reverse on their own.
-   WAAPI moves cancel and restart from `getBoundingClientRect` or the computed style.
-   A spring restart carries its speed (`GLIDE_CARRY`). A counting figure continues
-   from the value it shows.
-6. **How does it leave?** An exiting element stops taking space and stops taking
-   input (`inert`, `pointer-events: none`) at once, then fades. Its neighbors close
-   the gap while it goes.
-7. **What if motion is off?**
-   - `prefers-reduced-motion`: every helper jumps to the end state, and the CSS sets
-     durations to 1ms and removes press scale. A fade may stay where a jump would be
-     lost. The end state is the same either way.
-   - A keyboard action takes effect at once (`lastInputWasKeyboard()`).
-   - A resize follows the window with no motion.
-   - Theme and palette changes snap (`setTheme`, `hl-no-transitions`).
+Use a quick ease-out for arrival and feedback, a stronger ease-in-out for something already on screen changing position, and a drawer curve for sheets. Useful starting points are `cubic-bezier(0.23, 1, 0.32, 1)` for arrival, `cubic-bezier(0.77, 0, 0.175, 1)` for movement, and `cubic-bezier(0.32, 0.72, 0, 1)` for drawers.
 
-## Rules that are easy to break
+Keep ordinary interaction transitions around 120–280ms and exits shorter than entrances. A deliberate layout resize or a first chart draw can take longer when that extra time helps explain the change. Treat those as exceptions, not a new default.
 
-- No bounce or overshoot on data or layout. A bar past its value is briefly wrong.
-- No entrance on every repaint or every list row. First paint only, and only where the
-  arrival is the point.
-- No skeletons shaped like fake content. Pulse the box the content will fill.
-- A refetch keeps what is shown and dims it only after 450ms (`slowFlag`).
-- Press feedback is `scale: .96` on buttons and `.98` on large targets. None on rows.
-- Hover rules live inside `@media (hover: hover) and (pointer: fine)`.
-- State never rests on motion alone: the chosen option also has `aria-pressed` and full
-  ink, and a moved item keeps focus.
-- Drag is never the only way to reorder. Offer buttons or arrow keys.
-- One `view-transition-name` per element on the page. A duplicate aborts the
-  transition.
+Use transform and opacity where possible. A collapsing section or a few text-bearing chart tiles may need layout animation; choose it deliberately, batch measurements before writes, and keep the work bounded. Avoid bounce or overshoot on data and layout: a bar beyond its value is briefly wrong.
 
-## Check it
+## Design the interruption before the entrance
 
-Open `assets/demo.html` over HTTP. Click each control twice quickly, so the second
-click lands mid-move. Repeat with the keyboard (it should be instant) and with reduced
-motion turned on in DevTools rendering settings (it should end in the same state).
+Every new target starts from what is visible now. A drawer must reverse when closed mid-open; a chart must continue from its intermediate values; a moved tile must not snap back to its old box. For frequently retargeted movement, a damped spring can carry velocity into the next target.
+
+Make an exiting element stop accepting input immediately. Keep focus attached to the same meaningful object, and restore it to the opener when a dialog closes. Never delay the underlying action until the animation finishes.
+
+## Apply restraint to analysis
+
+Let chart hover, keyboard focus, and pinned inspection update the same readout immediately. A brief opacity emphasis can connect a ranked row with its band, but it must not reorder the list or become the only indication of selection. Keep pinned state explicit through words or control state.
+
+Animate a filter dialog to explain where it came from only when the interaction benefits from that movement. Preserve the current chart and figures during a refetch. Apply theme and palette changes together without fading through intermediate colors.
+
+When reduced motion is requested, reach the same final state without spatial travel. Keyboard actions and resizes remain immediate regardless of that preference. Do not hide information or break completion logic when animation is removed.
+
+Use the [pattern guidance](references/patterns.md) for specific interactions and the [spring guidance](references/spring.md) when continuity requires a spring. Inspect rapid repeated input, reversal, dismissal, reduced motion, and keyboard use in the actual interface; a pleasant first entrance is only the beginning of the implementation.

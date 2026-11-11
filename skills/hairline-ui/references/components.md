@@ -71,6 +71,7 @@ Markup below is the minimum. Copy from the specimen for the full shape.
   `hl-kpi-note` with a `delta()`. `.is-alert` puts value and note in `up`.
 - `hl-stats` > stat label, value 20px, note. For secondary figures.
 - `hl-hero-value`: 40px, one per page at most.
+- In an analysis workspace, `hl-display-title` is a distinct bold display role. `hl-comparison` can contain three large figures for left share, the signed lead, and right share; this is one comparison, not three unrelated heroes.
 - `hl-delta[data-dir]`: arrow + sign + number. Color adds to them, never replaces them.
 - `hl-meter`: 3px track, fill with `--value: 0..1`, optional `hl-meter-mark` at
   `--mark: 55%` for even pace. `data-status="over"` uses `up`. Always followed by an

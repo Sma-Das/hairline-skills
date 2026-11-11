@@ -80,6 +80,12 @@ the page "quieter"; lower the number of things on the page instead.
 
 ## Data colors
 
+### Related families
+
+For related entities, use `familyColor(key, family, { theme, tone?, tones? })` from the bundled family helper. Built-in families are coral, silver, emerald, sky, violet, and neutral. The stable key chooses a tone without depending on the current sort or filter; provide an integer tone when a specific sibling distinction matters. Unknown families use neutral. Custom tones provide dark and light family arrays, including a neutral fallback.
+
+Use the returned hue for marks, swatches, and large comparison figures. Keep small labels in normal ink unless their actual color/background pair clears the text threshold. Related tones can be deliberately subtle; the legend and names still carry identity. Keep the bright categorical mode available when distinct unrelated categories need it.
+
 - One series: `chart-line` or `chart-bar`, never a data color.
 - Two to eight: `data-1..n` in order. More than eight: show the top seven and group
   the rest as "Other" in `faint`.

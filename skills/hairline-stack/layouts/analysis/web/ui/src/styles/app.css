@@ -1,0 +1,13 @@
+@import "../hairline/palettes.css";
+@import "../hairline/hairline.css";
+@import "../hairline/workspace.css";
+@import "../hairline/charts.css";
+
+.hl-analysis-tabs [aria-current="page"] { color: var(--hl-ink); text-decoration: underline; text-decoration-color: var(--hl-rule); text-underline-offset: 10px; }
+.app-error { color: var(--hl-up); font-size: 13px; }
+.hl-workbench-main .hl-note { margin-block: 5px; }
+@media (max-width: 560px) {
+  .hl-analysis-app .hl-header-inner { gap: 8px 14px; }
+  .hl-analysis-app .hl-brand { font-size: 17px; }
+  .hl-analysis-app .hl-analysis-tabs { order: 3; flex-basis: 100%; }
+}

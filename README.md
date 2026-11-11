@@ -19,9 +19,13 @@ npx skills add Sma-Das/hairline-skills --skill '*'
 | Skill | What it provides | Companion |
 | --- | --- | --- |
 | [hairline-ui](skills/hairline-ui/SKILL.md) | Flat layouts, typography, accessible controls, dark and light themes, seven palettes, and a custom palette generator | Independent |
-| [hairline-stack](skills/hairline-stack/SKILL.md) | Go API with embedded Svelte 5 + Vite UI, sample data, tests, Dockerfile, and CI scaffold | Install hairline-ui alongside it |
-| [hairline-charts](skills/hairline-charts/SKILL.md) | SVG line, stacked, bars with running total, scatter, treemap, and calendar heatmap | Install hairline-ui alongside it |
+| [hairline-stack](skills/hairline-stack/SKILL.md) | Go API with embedded Svelte 5 + Vite UI, dashboard or analysis workspace, sample data, tests, Dockerfile, and CI scaffold | Install hairline-ui alongside it |
+| [hairline-charts](skills/hairline-charts/SKILL.md) | SVG share and signed comparison charts, linked rankings, trends, scatter, treemap, and calendar heatmap | Install hairline-ui alongside it |
 | [hairline-motion](skills/hairline-motion/SKILL.md) | Motion decisions, curves, springs, interruption handling, FLIP, and reduced motion | Independent |
+
+The agent instructions focus on design intent, decisions, and implementation quality. Detailed recipes and reusable code are supporting resources, rather than file catalogs in the skill entry points.
+
+The analysis workspace combines DM Sans display typography, optional related color families, a normalized share chart or signed two-group comparison, linked keyboard/touch inspection, a responsive filter rail, source and coverage notes, shareable view state, and portable SVG/PNG exports. Bright categorical colors remain available.
 
 The skills work with agents that support the [Agent Skills format](https://agentskills.io/). Each folder includes its instructions, references, and reusable assets.
 
@@ -37,6 +41,12 @@ Bright, saturated color recommendations cover copper-orange, sky blue, leaf gree
 ## Previews
 
 Generated, fictional data only.
+
+| Analysis workspace, dark | Analysis workspace, light |
+| --- | --- |
+| ![Analysis workspace, dark](skills/hairline-stack/references/analysis-dark.png) | ![Analysis workspace, light](skills/hairline-stack/references/analysis-light.png) |
+
+[Mobile workspace](skills/hairline-stack/references/analysis-mobile.png) · [Signed comparison](skills/hairline-stack/references/comparison-dark.png)
 
 | Dark | Light |
 | --- | --- |
@@ -60,6 +70,8 @@ cd ../..
 go vet ./...
 go test ./...
 ```
+
+For the analysis layout, use `bash skills/hairline-stack/scripts/scaffold.sh --layout analysis /tmp/hairline-analysis example.com/hairline-analysis "Example analytics"`. It needs the UI and charts skills installed alongside the stack skill.
 
 The scaffold requires Node 22 and Go 1.22 or newer. Commit the generated npm lockfile, then use `npm ci` for subsequent installs. The repository workflow runs these checks on pull requests and pushes.
 

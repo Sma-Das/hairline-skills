@@ -1,6 +1,12 @@
 /* Chart classes beyond hairline.css. Load after palettes.css and hairline.css.
    Token-only: every color is a --hl- token or a series color in --c / inline fill. */
 
+/* Linked analysis readouts react without moving the marks or the ranking. */
+.hl-share-bands.has-hot > :not(.is-hot) { opacity: .22; }
+.hl-share-bands > * { transition: opacity 100ms ease-out; }
+.hl-analysis-chart[data-input="keyboard"] .hl-share-bands > * { transition: none; }
+.hl-analysis-chart:focus-visible { outline-offset: 2px; }
+
 /* Line chart: one series, running (line) or per step (bars), on one scale. */
 .hl-line-bars, .hl-line, .hl-end { transition: opacity 160ms ease-out; }
 .hl-chart[data-mode="daily"] .hl-line, .hl-chart[data-mode="daily"] .hl-end { opacity: 0; }

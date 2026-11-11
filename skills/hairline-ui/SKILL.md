@@ -1,153 +1,42 @@
 ---
 name: hairline-ui
-description: "Build or restyle web UIs in the flat hairline style: dark-first dashboards, desks, and admin tools."
+description: "Design and build flat, typography-led dashboards and analytical interfaces with expressive color, clear hierarchy, and precise interactions."
 ---
 
 # Hairline UI
 
-A flat, type-led interface style for data-heavy web apps: dashboards, usage desks,
-admin consoles, internal tools. Type sits on the page, 1px hairlines separate things,
-controls are words with an underline. Color comes from one saturated signature hue and a
-bright categorical data palette. Dark first, with a matching light theme.
+Design a working interface whose clarity comes from typography, alignment, and space. Give the product a deliberate visual identity without covering the data in containers or decoration. Preserve the user's content, framework, and brand; this skill supplies a design approach, not a fixed theme.
 
-Keep the user's product, words, framework, and data. This skill sets the look and the
-interaction rules, not the content. For the matching build stack (Svelte 5 + Vite +
-Go embed), see the `hairline-stack` skill.
+## Start with the decision
 
-## Files
+Identify what the person needs to understand or do, what information supports that decision, and which controls change its scope. Arrange the page around that sequence. A monitoring overview, a detailed investigation, and a form should not inherit the same layout merely because they share a stylesheet.
 
-- `assets/palettes.css`: every color token, seven presets, dark and light. Load first.
-- `assets/hairline.css`: every component, token-only. Load second.
-- `assets/dm-sans.woff2` + `FONT-LICENSE.txt` (OFL): the font. Ship the license with it.
-- `assets/js/`: plain ES modules, no dependencies. `ui.js` (el, icon, prefs, seg and
-  thumb, delta, focus trap, toast, slowFlag), `motion.js`, `select.js` (custom
-  drop-down over a native select), `tooltip.js`, `palette.js` (command palette),
-  `charts.js` (SVG primitives, sparkline, bar chart).
-- `assets/specimen.html`: every component on one page. Serve it over HTTP (the page uses ES modules); `?palette=moss&theme=light`.
-- `assets/specimen-dark.png`, `specimen-light.png`: what the specimen should look like.
-- `scripts/palette.mjs`: generate a palette from hues and check contrast.
-- `references/palettes.md`: color roles, presets, how to choose, data colors. Read
-  before picking colors.
-- `references/components.md`: markup and rules per component. Read before building.
-- `references/motion.md`: curves, durations, and when not to animate.
+Choose a dashboard when people scan several independent summaries. Choose an analysis workspace when one chart, a ranked breakdown, and persistent filters must work together. On a wide screen, a narrow filter rail can remain visible beside the analysis. On a phone, move those filters into an explicitly labelled dialog, put the ranking below the chart, and let the document scroll naturally.
 
-Start: copy `assets/` into the app's static folder, add `class="hl-root"` to `<body>`
-(or the app root), pick `data-palette`, then build from the specimen's markup.
+## Let typography establish the hierarchy
 
-## Character
+Use DM Sans when the brief calls for this character, or preserve an established product typeface. Build clear roles rather than giving every heading the same weight. A bold 24px display heading, a 38px medium-weight comparison figure, and quieter 12–14px supporting text are useful starting points. Smaller section headings can stay at medium weight. Give large numerals slightly tighter tracking and use tabular figures wherever values are compared.
 
-- Flat. No cards, panels, radii, gradients, or shadows on the page. A section is a
-  hairline above it and air below it.
-- Only things that float over the page (tooltip, menu, palette, toast, drawer) get the
-  surface color and a hairline border. Still no radius and no shadow.
-- Controls are text. Buttons are words that go from muted to ink. Options are text
-  with a 1px rule-colored thumb under the chosen one. Fields are an underline.
-- The one solid thing on a page is a form's primary action: ink fill, bg text.
-- Hierarchy comes from size, weight 500 vs 400, and ink vs muted vs faint. Not color,
-  not boxes.
-- Restraint over decoration. If something needs a box to be seen, the page has too much.
+Keep labels in sentence case. Express hierarchy through scale, weight, and spacing before adding another color or border. Compact desktop controls should remain readable, and touch targets should grow on smaller screens without shrinking the text.
 
-## Color
+## Choose color for the subject
 
-Use the tokens. Never write a hex value in component CSS. Roles: `bg`, `surface`,
-`hover`, `line`, `line-strong`, `faint`, `muted`, `ink`, `rule` (signature), `focus`,
-`up`, `down`, `chart-line`, `chart-bar`, `data-1..8`.
+Keep page chrome neutral and reserve vivid color for information, selection, and emphasis. Recommend a palette for the product and explain the choice briefly. Copper, sky blue, emerald, coral, gold, and violet are possibilities, not a mandatory sequence; black and bronze are not the identity of every project.
 
-Recommend a preset from `references/palettes.md` that fits the product, and say why in
-one line. Presets: `bronze` (default, warm, premium), `graphite` (engineering),
-`moss` (calm, health), `oxblood` (editorial, legal), `amber` (ops, night),
-`iris` (creative, AI), `mono` (white-label). With a brand color, generate one:
-`node scripts/palette.mjs --name brand --neutral H:0.008 --rule H:0.20 --focus H2`.
-Keep the page chrome neutral; use bright, saturated accents for selected controls
-and chart marks. Recommend a hue for the product instead of defaulting to bronze.
+Use categorical colors when unrelated items need distinct identities. Use related tones within a family when the relationship itself matters: several products from one group can share a hue while another group uses a contrasting hue or a neutral family. Assign colors from stable identities so filtering and sorting never repaint an item. Give unknown groups an explicit neutral treatment.
 
-- `rule` appears as thin strokes and chart bars only. Never a large fill.
-- `focus` is far from the rule in hue, so focus never reads as selection.
-- `up`/`down` always ride with an arrow and a sign. Up is not automatically bad.
-- One series uses `chart-line`/`chart-bar`; categories use `data-1..8` in order, same
-  category same color on every chart.
-- Floors: ink 12:1; muted, faint, and direction text 4.5:1; accents and categorical
-  marks 3:1 on bg and surface; white treemap labels 4.5:1 through hover.
-  The generator checks them; rerun after any hand edit.
+Color must survive both appearances and the actual surfaces it touches. Check text, chart marks, focus rings, and hover fills separately. Retain labels and other non-color cues. Consult the [color guidance](references/palettes.md) when generating or adapting a palette.
 
-## Typography
+## Make the interface feel direct
 
-- DM Sans, variable 400–700, with system fallbacks. Weights 400 and 500 only.
-- Base 15px / 1.6. Page title 26px 500 −0.6px. Section title 15px 500. Notes 12.5px
-  faint. Table 13.5px, header 12px faint 400. KPI 26px 500 −0.6px. Stat 20px. Hero 40px
-  −1.2px, one per page.
-- `font-variant-numeric: tabular-nums` on every number, table, chart, and delta.
-- `text-wrap: balance` on headings, `pretty` on notes and intros.
-- Sentence case everywhere. No all-caps labels, no letter-spaced eyebrows.
+Use text controls, underlines, and restrained hairlines to explain grouping and selection. Keep ordinary content on the page; reserve raised surfaces for things that float. Resist repeated metric cards, ornamental badges, and decorative gradients when alignment and whitespace already do the work.
 
-## Layout
+Make scope visible near the data. Filters need a selection count and a clear way back. If one view intentionally ignores a filter, say so beside that view. A chart and its ranking should share an inspection state: pointer hover, keyboard focus, and a pinned touch selection must reveal the same information without moving the ranking under the pointer.
 
-- One 1536px column, 28px gutters (16px under 800px).
-- Sticky 60px header, then one sticky context bar for the page's scope (window, team,
-  filter). Under 800px the context bar stops sticking and nav wraps to its own row.
-- Page head: h1, one intro line, one scope line ("Oct 12 – Nov 10 · 30 days").
-- `hl-board`: a two-column grid of sections, each full width or half (`data-width`).
-  One column under 1000px.
-- Figures first (KPIs), then trend, then breakdown, then the table, then actions.
-- Breakpoints: 1199 (side panel becomes sheet), 1000 (one column), 800 (gutters,
-  nav, low-priority columns), 560 (two-up KPIs, 40–44px touch targets, 16px inputs).
+Explain source, freshness, missing coverage, and estimates where they affect interpretation. Put detailed methodology behind a meaningful disclosure. Write errors and empty states as specific explanations with a useful next action.
 
-## Interaction
+Build complete keyboard paths, visible focus, labelled controls, and reliable focus restoration for dialogs. Keep the last good data during a refresh. Apply appearance changes immediately and avoid animation on frequent reading actions. For the workbench composition and controls, use the [workspace guidance](references/workspace.md) and [interaction recipes](references/components.md) when needed.
 
-- Every state is in the DOM: `aria-pressed`, `aria-current`, `aria-expanded`,
-  `aria-sort`, `aria-selected`. Motion and color only add to it.
-- Hover styles only under `(hover: hover) and (pointer: fine)`.
-- Focus: 2px `focus` outline, 3px offset, on `:focus-visible`.
-- Keyboard: Cmd/Ctrl+K and `/` open the palette, Escape closes the top layer, arrows
-  move in lists. A keyboard action takes effect without animation.
-- URL state: the page and the record live in the hash (`#people/<id>`), so Back works
-  and restores focus and scroll.
-- Per-browser preferences (theme, palette, window, section layout, chart mode) live
-  in localStorage (`readPref`/`writePref`) and never go to the server.
-- Theme change snaps. See `references/motion.md` for everything that moves.
+## Build, inspect, refine
 
-## Data viz
-
-- SVG drawn by hand from `charts.js`. No chart library.
-- Dotted gridlines, faint axis text, a solid baseline, 1.5px lines, bars with a small gap.
-- Hover dims other marks; the tooltip enhances and never gates. Every value it shows
-  is also in a table or label on the page.
-- Repaint on width change; never paint while hidden.
-- Empty data is one sentence in the frame. A projection is dotted, a limit dashed.
-- Integer units (cents, counts) get integer ticks.
-- Prefer a table plus a share bar over a pie. Treemap for parts of a whole with many
-  parts; heatmap for a year of days.
-
-## States
-
-Loading pulses in the box the content will fill. Refetch keeps the last figures and
-dims after 450ms. Empty says why and what to try. Errors are a sentence plus Retry.
-Things the viewer cannot use are hidden, not disabled.
-
-## Copy
-
-- Plain, short, specific. "68% of $900 used, 55% of the month gone."
-- Numbers carry their unit and their comparison: "+12% vs $4,296.10".
-- Buttons say what happens: "Send request", not "Submit".
-- Notes say what the section shows in one line. No marketing voice, no exclamation marks.
-
-## Anti-patterns
-
-- Cards with shadows or radii around sections. Filled pill toggles. Gradient headers.
-- Colored backgrounds for state (red row, green badge). Use `up`/`down` text and arrows.
-- Icon-only controls without a label. Icons are 24-grid, 1.8 stroke, round caps, and
-  usually sit beside a word.
-- A chart library's default look, legends with squares, 3D, pies with many slices.
-- Muting every accent and data series into gray or pastel. Large colored page backgrounds.
-- Spinners. Skeletons shaped like fake content. Animation on every repaint.
-- More than one primary button in view.
-
-## Checklist
-
-- [ ] `palettes.css` before `hairline.css`; `.hl-root` set; a preset chosen with a reason.
-- [ ] No hex in component CSS; no radius or shadow on the page.
-- [ ] Contrast checked (`node scripts/palette.mjs --preset <name>` or the custom args).
-- [ ] Every number tabular; every delta has arrow and sign.
-- [ ] Every chart value also in a table or label; empty and hidden states handled.
-- [ ] States in ARIA; focus visible; hover gated to fine pointers; reduced motion works.
-- [ ] Checked at 1440, 1000, 800, and 320px, dark and light.
+Implement the actual interactions, then inspect the result in dark and light appearances and at narrow widths. Check long names, empty selections, missing days, and a fully open filter panel. Remove anything that competes with the primary question. Keep the user's chosen aesthetic ahead of the defaults in this skill.
