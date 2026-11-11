@@ -59,7 +59,7 @@ ones the modules use. Change one only for a reason you can name.
   it holds the group label (the year) under the period labels.
 - `update(rows, { label })`. Each row is `{ label, group, title, value, partial? }`.
 - `setRunning(bool)`: shows or hides the running-total line and its dots.
-- Bars are `band * 0.62` wide, clamped from 4px to 56px, with `rx: 3`. Each bar is 62%
+- Bars are `band * 0.62` wide, clamped from 4px to 56px, with `rx: 3`. Each bar is 85%
   `chart-bar` mixed into the page color, and the hot bar is full `chart-bar`.
 - A period gets a label when it has 36px of room (`every = ceil(36 / band)`). The
   tooltip names every period.
@@ -76,7 +76,7 @@ ones the modules use. Change one only for a reason you can name.
   Each title says "log scale".
 - `update(points, { label })`. Each point is `{ key, name, x, y, size, color }`.
 - Radius is `4 + sqrt(size / maxSize) * 26`, so area tracks size. The fill opacity is
-  .55 and the stroke is solid, so overlaps stay readable.
+  .75 and the stroke is solid, so overlaps stay readable.
 - Labels: up to 6 (`labels`), biggest first. A label is drawn only where it does not
   hit another label or the edge.
 - Hover: the nearest bubble whose edge is within `reach` (28px) of the pointer.
