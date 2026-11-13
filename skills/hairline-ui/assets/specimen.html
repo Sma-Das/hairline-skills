@@ -124,9 +124,9 @@
     </section>
 
     <section class="hl-section" data-width="half">
-      <div class="hl-section-head"><div class="hl-section-title"><h2>Ask for more</h2><p class="hl-note">Fields are a hairline. The one solid thing is the primary action.</p></div></div>
+      <div class="hl-section-head"><div class="hl-section-title"><h2>Ask for more</h2><p class="hl-note">Fields are a hairline. The one solid thing is the primary action. This specimen form sends nothing.</p></div></div>
       <div class="hl-section-body"><div class="hl-section-inner">
-        <form class="hl-form" onsubmit="event.preventDefault(); window.hlToast('Request sent. You will hear back by email.')">
+        <form class="hl-form" onsubmit="event.preventDefault(); window.hlToast('Specimen only. Nothing was sent.')">
           <label class="hl-label">Amount<input class="hl-input" inputmode="decimal" value="200"></label>
           <label class="hl-label">Reason<select class="hl-select"><option>New project</option><option>Deadline</option><option>Other</option></select></label>
           <label class="hl-label">Note<textarea class="hl-input" placeholder="What it is for"></textarea></label>
@@ -151,7 +151,7 @@
         <div style="display:flex; gap:18px; margin-top:12px">
           <button class="hl-button" type="button" id="open-dialog">Open dialog</button>
           <button class="hl-button" type="button" id="open-drawer">Open drawer</button>
-          <button class="hl-button" type="button" onclick="window.hlToast('Saved.')">Show toast</button>
+          <button class="hl-button" type="button" onclick="window.hlToast('Example toast. Nothing was saved.')">Show toast</button>
         </div>
         <div class="hl-wait" style="margin-top:14px" aria-label="Loading"></div>
       </div></div>
