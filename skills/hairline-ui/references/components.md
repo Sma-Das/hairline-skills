@@ -114,6 +114,8 @@ Only floating things get `surface` and a `line-strong` border. No radius, no sha
 
 - `hl-tip`: one tooltip for the whole page, positioned with transform, flips at edges.
 - `hl-toast` via `createToast()`: bottom end, 3.6s, a live region carries the words.
+  Report only what happened: a success toast follows a confirmed result, never a
+  demo or a request still in flight.
 - `hl-palette` via `createPalette({ items })`: Cmd/Ctrl+K and `/`. Items come from data
   the viewer already has. Grouped, fuzzy (`matchScore`), arrows + Enter.
 - `hl-dialog`: native `<dialog>`, page background, sticky head. `hl-drawer` slides from
